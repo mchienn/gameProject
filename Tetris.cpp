@@ -61,6 +61,12 @@ void Tetris::nextTetrimino()
 		items[i].x = Cols / 2 - 2 + figures[n][i] % 4;
 		items[i].y = int(figures[n][i] / 4);
 	}
+
+	if (isGameOver())
+	{
+		running = false;
+		return;
+	}
 }
 
 void Tetris::handleEvents()
@@ -273,4 +279,12 @@ void Tetris::instantDrop()
 			break;
 		}
 	}
+}
+
+bool Tetris::isGameOver()
+{
+	for (int x = 0; x < Cols; x++)
+		if (field[1][x] != 0) // check if there is a block in the top row
+			return true;
+	return false;
 }

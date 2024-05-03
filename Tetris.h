@@ -38,6 +38,7 @@ public:
 	bool isvalid();
 
 	bool init(const char *title);
+	bool isGameOver();
 	void nextTetrimino();
 	void handleEvents();
 	void setRectPos(SDL_Rect &rect, int x = 0, int y = 0, int w = BlockW, int h = BlockH);
@@ -47,6 +48,8 @@ public:
 	void updateRender();
 	void clean();
 
+	bool isAlive = true;
+
 private:
 	SDL_Window *window = NULL;
 	SDL_Renderer *render = NULL;
@@ -54,8 +57,6 @@ private:
 	SDL_Rect srcR = {0, 0, BlockW, BlockH}, destR = {0, 0, 32, 32};
 
 	bool running = false;
-
-	bool isAlive = true;
 
 	bool isPause = false;
 
