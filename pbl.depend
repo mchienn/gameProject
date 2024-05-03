@@ -1,9 +1,9 @@
 # depslib dependency file v1.0
-1714750693 source:e:\code block\works\pbl\tetris.cpp
+1714755722 source:e:\code block\works\pbl\tetris.cpp
 	<iostream>
 	"Tetris.h"
 
-1714752066 e:\code block\works\pbl\tetris.h
+1714757256 e:\code block\works\pbl\tetris.h
 	<SDL.h>
 	<SDL_image.h>
 	<string>

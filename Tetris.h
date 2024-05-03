@@ -18,11 +18,11 @@ class Tetris
 public:
 	Tetris()
 	{
-	    //cstr
+		// cstr
 	}
 	~Tetris()
 	{
-	    //dstr
+		// dstr
 	}
 
 	void setCurrentTime(Uint32 t)
@@ -37,21 +37,21 @@ public:
 
 	bool isvalid();
 
-	bool init(const char* title);
+	bool init(const char *title);
 	void nextTetrimino();
 	void handleEvents();
-	void setRectPos(SDL_Rect& rect, int x = 0, int y = 0, int w = BlockW, int h = BlockH);
-	void moveRectPos(SDL_Rect& rect, int x, int y);
+	void setRectPos(SDL_Rect &rect, int x = 0, int y = 0, int w = BlockW, int h = BlockH);
+	void moveRectPos(SDL_Rect &rect, int x, int y);
 	void gameplay();
+	void instantDrop();
 	void updateRender();
 	void clean();
 
 private:
-
-	SDL_Window* window = NULL;
-	SDL_Renderer* render = NULL;
-	SDL_Texture* background = NULL, * blocks = NULL;
-	SDL_Rect srcR = { 0, 0, BlockW, BlockH }, destR = { 0, 0, 32, 32 };
+	SDL_Window *window = NULL;
+	SDL_Renderer *render = NULL;
+	SDL_Texture *background = NULL, *blocks = NULL;
+	SDL_Rect srcR = {0, 0, BlockW, BlockH}, destR = {0, 0, 32, 32};
 
 	bool running = false;
 
@@ -59,11 +59,14 @@ private:
 
 	bool isPause = false;
 
-	int field[Lines][Cols] = { 0 };
+	int field[Lines][Cols] = {0};
 
 	static const int figures[7][4];
 
-	struct Point{int x, y;} items[4], backup[4], next[4];
+	struct Point
+	{
+		int x, y;
+	} items[4], backup[4], next[4];
 
 	int color = 1;
 
@@ -75,6 +78,5 @@ private:
 
 	Uint32 startTime = 0, currentTime = 0;
 };
-
 
 #endif // !TETRIS_H_
