@@ -21,8 +21,6 @@ int main(int argc, char* argv[])
 	{
 		cout << "Failed to initialize";
 	}
-
 	tetris->clean();
-
 	return 0;
 }

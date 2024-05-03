@@ -63,7 +63,7 @@ private:
 
 	static const int figures[7][4];
 
-	struct Point{int x, y;} items[4], backup[4];
+	struct Point{int x, y;} items[4], backup[4], next[4];
 
 	int color = 1;
 

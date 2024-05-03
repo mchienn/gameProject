@@ -58,8 +58,10 @@ void Tetris::nextTetrimino()
 	for (int i = 0; i < 4; i++)
 	{
 		items[i].x = figures[n][i] % 4;
-		items[i].y = int(figures[n][i] / 4);
+		items[i].y = int(figures[n][i]/4);
 	}
+
+
 }
 
 void Tetris::handleEvents()
@@ -84,7 +86,27 @@ void Tetris::handleEvents()
 			case SDLK_RIGHT:
 				dx = 1;
 				break;
-
+            case SDLK_p:
+                isPause = (isPause == true ? false : true);
+                if (isPause == true)
+                {
+                    while (SDL_WaitEvent(&e))
+                    {
+                        if (e.type == SDL_KEYDOWN)
+                        {
+                            if (e.key.keysym.sym == SDLK_p)
+                            {
+                                 break;
+                            }
+                        }
+                    }
+                    isPause = false;
+                }
+                break;
+            case SDLK_ESCAPE:
+                //instantly quit the game
+                running = false;
+                break;
 			default:
 				break;
 			}
@@ -94,12 +116,12 @@ void Tetris::handleEvents()
 	}
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 	if (state[SDL_SCANCODE_DOWN])
-		delay = 50;
+		delay = 60;
 }
 
 void Tetris::setRectPos(SDL_Rect& rect, int x, int y, int w, int h)
 {
-	rect = {x, y, w, h };
+	rect = {x, y, w, h};
 }
 
 void Tetris::moveRectPos(SDL_Rect& rect, int x, int y)
@@ -121,7 +143,7 @@ bool Tetris::isvalid()
 void Tetris::gameplay()
 {
 
-	// backup
+	// save the blocks
 	for (int i = 0; i < 4; i++)
 		backup[i] = items[i];
 	// move
@@ -136,23 +158,32 @@ void Tetris::gameplay()
 				items[i] = backup[i];
 	}
 
-	///////// rotate
+	// rotate
 	if (rotate)
 	{
-		Point p = items[2];	// center of rotation
-		for (int i = 0; i < 4; i++)
-		{
-			int x = items[i].y - p.y;
-			int y = items[i].x - p.x;
-			items[i].x = p.x - x;
-			items[i].y = p.y + y;
-		}
-		if (!isvalid())
-			for (int i = 0; i < 4; i++)
-				items[i] = backup[i];
+	    //the square cannot rotate
+	    if (items[0].x == 1 && items[1].x == 2 && items[2].x == 1 && items[3].x == 2)
+        {
+        }
+	    else
+        {
+            Point p = items[2];	// center of rotation
+            for (int i = 0; i < 4; i++)
+            {
+                int x = items[i].y - p.y;
+                int y = items[i].x - p.x;
+                items[i].x = p.x - x;
+                items[i].y = p.y + y;
+            }
+            //check the rotate valid
+            if (!isvalid())
+                for (int i = 0; i < 4; i++)
+                    items[i] = backup[i];
+        }
 	}
-	///////// tick
-	if (currentTime - startTime >delay)
+
+	// tick
+	if (currentTime - startTime > delay)
 	{
 		for (int i = 0; i < 4; i++)
 			backup[i] = items[i];
@@ -168,7 +199,7 @@ void Tetris::gameplay()
 		startTime = currentTime;
 	}
 
-	//////// check lines
+	// check lines
 	int k = Lines - 1;
 	for (int i = k; i > 0; i--)
 	{
