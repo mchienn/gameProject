@@ -31,13 +31,7 @@ bool Tetris::init(const char *title)
 				if ((initted & imgFlags) != imgFlags)
 					std::cout << "Failed to init required png support\n"
 							  << "IMG_Init() Error : " << IMG_GetError() << std::endl;
-				SDL_Surface *loadSurf = IMG_Load("img/background.png");
-				background = SDL_CreateTextureFromSurface(render, loadSurf);
-				SDL_FreeSurface(loadSurf);
-				loadSurf = IMG_Load("img/blocks.png");
-				blocks = SDL_CreateTextureFromSurface(render, loadSurf);
-				SDL_FreeSurface(loadSurf);
-				nextTetrimino();
+                		menu = new Menu(render);
 			}
 			else
 				return false;
@@ -172,7 +166,7 @@ void Tetris::gameplay()
 	if (rotate)
 	{
 		// the square cannot rotate
-		if (items[0].x == 1 && items[1].x == 2 && items[2].x == 1 && items[3].x == 2)
+		if (items[1].x - items[0].x == 1 && items[3].x - items[2].x == 1)
 		{
 		}
 		else
@@ -287,4 +281,16 @@ bool Tetris::isGameOver()
 		if (field[1][x] != 0) // check if there is a block in the top row
 			return true;
 	return false;
+}
+
+void Tetris::startGame()
+{
+	srand(time(0));
+	// load the images (background and blocks
+	SDL_Surface *loadSurf = IMG_Load("img/background.png");
+	background = SDL_CreateTextureFromSurface(render, loadSurf);
+	SDL_FreeSurface(loadSurf);
+	loadSurf = IMG_Load("img/blocks.png");
+	blocks = SDL_CreateTextureFromSurface(render, loadSurf);
+	SDL_FreeSurface(loadSurf);
 }

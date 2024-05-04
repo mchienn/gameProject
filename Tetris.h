@@ -5,13 +5,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
-
-#define ScreenW 600
-#define ScreenH 960
-#define BlockW 36
-#define BlockH 36
-#define Lines 20
-#define Cols 10
+#include <bits/stdc++.h>
+#include "defs.h"
+#include "menu.h"
 
 class Tetris
 {
@@ -47,8 +43,12 @@ public:
 	void instantDrop();
 	void updateRender();
 	void clean();
+	void startGame();
+
 
 	bool isAlive = true;
+
+    Menu *menu;
 
 private:
 	SDL_Window *window = NULL;
@@ -78,6 +78,8 @@ private:
 	unsigned int delay = 300;
 
 	Uint32 startTime = 0, currentTime = 0;
+
+
 };
 
 #endif // !TETRIS_H_
