@@ -18,10 +18,21 @@ public:
 private:
     int state;
     SDL_Renderer *renderer;
+
+    SDL_Texture *logo;
+
     SDL_Texture *playButton;
+    SDL_Texture *redplayButton;
+
     SDL_Texture *instructionsButton;
+    SDL_Texture *redinstructionsButton;
+
+    SDL_Texture *quitButton;
+    SDL_Texture *redquitButton;
+
     SDL_Texture *muteMusicButton;
     SDL_Texture *muteSoundButton;
+
     SDL_Texture *menuBack;
 
     void loadTextures();

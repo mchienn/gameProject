@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <string>
 #include <bits/stdc++.h>
 #include "defs.h"
@@ -54,7 +55,7 @@ private:
 	SDL_Window *window = NULL;
 	SDL_Renderer *render = NULL;
 	SDL_Texture *background = NULL, *blocks = NULL;
-	SDL_Rect srcR = {0, 0, BlockW, BlockH}, destR = {0, 0, 32, 32};
+	SDL_Rect srcR = {0, 0, BlockW, BlockH}, destR = {0, 0, 36, 36};
 
 	bool running = false;
 
@@ -69,7 +70,9 @@ private:
 		int x, y;
 	} items[4], backup[4], next[4];
 
-	int color = 1;
+	int lastcolor = 1;
+
+	int currentcolor = 1;
 
 	int dx = 0;
 

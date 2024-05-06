@@ -32,6 +32,7 @@ bool Tetris::init(const char *title)
 					std::cout << "Failed to init required png support\n"
 							  << "IMG_Init() Error : " << IMG_GetError() << std::endl;
                 		menu = new Menu(render);
+
 			}
 			else
 				return false;
@@ -48,12 +49,28 @@ bool Tetris::init(const char *title)
 
 void Tetris::nextTetrimino()
 {
+
+
 	int n = rand() % 7;
-	color = 1 + n;
+	for (int i = 0; i < 4; i++)
+    {
+        items[i] = next[i];
+    }
+    currentcolor = lastcolor;
+    lastcolor = 1 + n;
+
+
+
+	for (int i = 0; i < 4; i++)
+    {
+        next[i].x = figures[n][i] % 4;
+        next[i].y = (int)(figures[n][i] / 4);
+    }
+
 	for (int i = 0; i < 4; i++)
 	{
-		items[i].x = Cols / 2 - 2 + figures[n][i] % 4;
-		items[i].y = int(figures[n][i] / 4);
+		items[i].x += Cols / 2 - 2;
+		items[i].y = items[i].y;
 	}
 
 	if (isGameOver())
@@ -166,7 +183,7 @@ void Tetris::gameplay()
 	if (rotate)
 	{
 		// the square cannot rotate
-		if (items[1].x - items[0].x == 1 && items[3].x - items[2].x == 1)
+		if (items[3].x - items[0].x == 1 && items[1].x - items[2].x == 1)
 		{
 		}
 		else
@@ -227,7 +244,17 @@ void Tetris::gameplay()
 
 void Tetris::updateRender()
 {
+
 	SDL_RenderCopy(render, background, NULL, NULL);
+
+    for (int i = 0; i < 4; i++)
+    {
+        setRectPos(srcR, lastcolor * BlockW, 0);
+        setRectPos(destR, 410 + next[i].x * BlockW, 300 + next[i].y * BlockH);
+        SDL_RenderCopy(render, blocks, &srcR, &destR);
+    }
+
+
 	for (int i = 0; i < Lines; i++)
 		for (int j = 0; j < Cols; j++)
 			if (field[i][j])
@@ -239,7 +266,7 @@ void Tetris::updateRender()
 			}
 	for (int i = 0; i < 4; i++)
 	{
-		setRectPos(srcR, color * BlockW);
+		setRectPos(srcR, currentcolor * BlockW, 0);
 		setRectPos(destR, items[i].x * BlockW, items[i].y * BlockH);
 		moveRectPos(destR, BlockW, ScreenH - (Lines + 1) * BlockH);
 		SDL_RenderCopy(render, blocks, &srcR, &destR);
@@ -268,7 +295,7 @@ void Tetris::instantDrop()
 		if (!isvalid())
 		{
 			for (int i = 0; i < 4; i++)
-				field[backup[i].y][backup[i].x] = color;
+				field[backup[i].y][backup[i].x] = currentcolor;
 			nextTetrimino();
 			break;
 		}
@@ -287,10 +314,25 @@ void Tetris::startGame()
 {
 	srand(time(0));
 	// load the images (background and blocks
-	SDL_Surface *loadSurf = IMG_Load("img/background.png");
+	SDL_Surface *loadSurf = IMG_Load("img/background2.png");
 	background = SDL_CreateTextureFromSurface(render, loadSurf);
 	SDL_FreeSurface(loadSurf);
 	loadSurf = IMG_Load("img/blocks.png");
 	blocks = SDL_CreateTextureFromSurface(render, loadSurf);
 	SDL_FreeSurface(loadSurf);
+
+
+    int n = rand() % 7;
+
+    for (int i = 0; i < 4; i++)
+    {
+        next[i].x = figures[n][i] % 4;
+        next[i].y = (int)(figures[n][i] / 4);
+    }
+
+	for (int i = 0; i < 4; i++)
+	{
+		items[i].x = Cols / 2 - 2 + figures[(n + 1) % 7][i] % 4;
+		items[i].y = (int)(figures[(n + 1) % 7][i] / 4);
+	}
 }
