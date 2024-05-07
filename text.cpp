@@ -26,7 +26,7 @@ SDL_Texture* Text::loadFont(SDL_Renderer* renderer, const std::string& font_path
     if (!font) {
         SDL_Log("Error \%s", SDL_GetError());
     }
-    SDL_Surface* surface = TTF_RenderText_Solid(font, message_text.c_str(), color);
+    SDL_Surface* surface = TTF_RenderText_Blended(font, message_text.c_str(), color);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
     TTF_CloseFont(font);

@@ -1,8 +1,9 @@
 #include "Tetris.h"
 #include <bits/stdc++.h>
+using namespace std;
 int main(int argc, char *argv[])
 {
-	using namespace std;
+
 	srand(time(0));
 	Tetris *tetris = new Tetris();
 	const char *title = "Tetris";
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
 			else if (tetris->menu->getState() == INSTRUCTIONS)
 			{
 			    tetris->menu->showins();
+			    tetris->menu->handleEvents();
 			}
 			else if (tetris->menu->getState() == PLAY)
 			{

@@ -19,6 +19,11 @@ public:
 
 private:
     int state;
+    bool ismusic = true;
+    bool issound = true;
+
+    SDL_Color textcolor = {255, 255, 255, 255};
+
     SDL_Renderer *renderer;
 
     SDL_Texture *logo;
@@ -29,11 +34,24 @@ private:
     SDL_Texture *instructionsButton;
     SDL_Texture *redinstructionsButton;
 
+    SDL_Texture *backbutton;
+    SDL_Texture *redbackbutton;
+
     SDL_Texture *quitButton;
     SDL_Texture *redquitButton;
 
+    SDL_Texture *musicButton;
+    SDL_Texture *redmusicButton;
+
     SDL_Texture *muteMusicButton;
+    SDL_Texture *redmuteMusicButton;
+
+    SDL_Texture *soundButton;
+    SDL_Texture *redsoundButton;
+
     SDL_Texture *muteSoundButton;
+    SDL_Texture *redmuteSoundButton;
+
 
     SDL_Texture *menuBack;
 
