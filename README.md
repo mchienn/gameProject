@@ -8,7 +8,7 @@ Features:
  - Basic game logic (done)
  - Graphics (done)
  - Pause/Play (done)
- - Menu
+ - Menu (done)
  - Sound
  - Score + High Score
  - GameOver -> Retry
