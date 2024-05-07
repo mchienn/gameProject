@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include "text.h"
 
 class Menu
 {
@@ -12,6 +13,7 @@ public:
     ~Menu();
 
     void show();
+    void showins();
     void handleEvents();
     int getState() {return state;}
 
@@ -37,6 +39,14 @@ private:
 
     void loadTextures();
     void freeTextures();
+
+    Text* instructions;
+    Text* moveRL;
+    Text* rotateblock;
+    Text* softdrop;
+    Text* harddrop;
+    Text* pause_play;
+    Text* instant_quit;
 };
 
 #endif // MENU_H

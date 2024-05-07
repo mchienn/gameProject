@@ -7,6 +7,13 @@ Menu::Menu(SDL_Renderer *renderer)
     state = MENU;
     this->renderer = renderer;
     loadTextures();
+    instructions = new Text(renderer, "img/gomarice_mix_bit_font.ttf", 36,  "          Instructions", {255, 255, 255, 255});
+    moveRL = new Text(renderer, "img/gomarice_mix_bit_font.ttf", 20,        "Move Left/Right:     Left/Right Arrow", {255, 255, 255, 255});
+    rotateblock = new Text(renderer, "img/gomarice_mix_bit_font.ttf", 20,   "Rotate:                                 Z ", {255, 255, 255, 255});
+    softdrop = new Text(renderer, "img/gomarice_mix_bit_font.ttf", 20,      "Soft Drop:                    Down Arrow", {255, 255, 255, 255});
+    harddrop = new Text(renderer, "img/gomarice_mix_bit_font.ttf", 20,      "Hard Drop:                    Space", {255, 255, 255, 255});
+    pause_play = new Text(renderer, "img/gomarice_mix_bit_font.ttf", 20,    "Pause/Play:                  P", {255, 255, 255, 255});
+    instant_quit = new Text(renderer, "img/gomarice_mix_bit_font.ttf", 20,  "Instant quit:               ESC", {255, 255, 255, 255});
 }
 
 Menu::~Menu()
@@ -43,6 +50,30 @@ void Menu::freeTextures()
     SDL_DestroyTexture(muteMusicButton);
     SDL_DestroyTexture(muteSoundButton);
 }
+
+void Menu::showins()
+{
+    SDL_RenderClear(renderer);
+
+    SDL_RenderCopy(renderer, menuBack, NULL, NULL);
+
+    instructions->display(50, 200, renderer);
+
+    moveRL->display (50, 305, renderer);
+
+    rotateblock->display (50, 355, renderer);
+
+    softdrop->display (50, 405, renderer);
+
+    harddrop->display (50, 455, renderer);
+
+    pause_play->display (50, 505, renderer);
+
+    instant_quit->display(50, 555, renderer);
+
+    SDL_RenderPresent(renderer);
+}
+
 
 void Menu::show()
 {
@@ -145,6 +176,7 @@ void Menu::handleEvents()
                 y >= 435 && y <= 435 + 50)
             {
                 // handle instructions button click
+                state = INSTRUCTIONS;
             }
             break;
         }

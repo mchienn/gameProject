@@ -16,6 +16,6 @@
 #define Render_BlockW 32
 #define Render_BlockH 32
 
-enum STATES {ACESS, MENU, PLAY, GAMEOVER,  ALL};
+enum STATES {ACESS, MENU, PLAY, INSTRUCTIONS, GAMEOVER,  ALL};
 
 #endif // _DEFS_H

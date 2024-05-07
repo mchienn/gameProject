@@ -70,6 +70,8 @@ private:
 		int x, y;
 	} items[4], backup[4], next[4];
 
+	//int color = 1;
+
 	int lastcolor = 1;
 
 	int currentcolor = 1;

@@ -17,6 +17,10 @@ int main(int argc, char *argv[])
 				tetris->menu->show();
 				tetris->menu->handleEvents();
 			}
+			else if (tetris->menu->getState() == INSTRUCTIONS)
+			{
+			    tetris->menu->showins();
+			}
 			else if (tetris->menu->getState() == PLAY)
 			{
 				if (counT == 0)

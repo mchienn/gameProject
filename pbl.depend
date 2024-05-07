@@ -1,9 +1,9 @@
 # depslib dependency file v1.0
-1714975900 source:e:\code block\works\pbl\tetris.cpp
+1715070077 source:e:\code block\works\pbl\tetris.cpp
 	<iostream>
 	"Tetris.h"
 
-1714976246 e:\code block\works\pbl\tetris.h
+1715069952 e:\code block\works\pbl\tetris.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
@@ -12,25 +12,27 @@
 	"defs.h"
 	"menu.h"
 
-1714830967 source:e:\code block\works\pbl\main.cpp
+1715072873 source:e:\code block\works\pbl\main.cpp
 	"Tetris.h"
 	<bits/stdc++.h>
 
-1714890623 source:e:\code block\works\pbl\menu.cpp
+1715076673 source:e:\code block\works\pbl\menu.cpp
 	"Menu.h"
 	"defs.h"
 	<iostream>
 
-1714890196 e:\code block\works\pbl\menu.h
+1715073846 e:\code block\works\pbl\menu.h
 	<SDL.h>
 	<SDL_image.h>
+	"text.h"
 
-1714879494 e:\code block\works\pbl\defs.h
+1715072502 e:\code block\works\pbl\defs.h
 
-1714972961 source:e:\code block\works\pbl\text.cpp
+1715073278 source:e:\code block\works\pbl\text.cpp
+	"text.h"
 
-1714921939 e:\code block\works\pbl\text.h
+1715071910 e:\code block\works\pbl\text.h
 	<SDL.h>
-	<SDL_image.h>
 	<SDL_ttf.h>
+	<string>
 

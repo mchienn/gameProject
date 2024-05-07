@@ -52,6 +52,7 @@ void Tetris::nextTetrimino()
 
 
 	int n = rand() % 7;
+
 	for (int i = 0; i < 4; i++)
     {
         items[i] = next[i];
@@ -216,7 +217,7 @@ void Tetris::gameplay()
 		if (!isvalid())
 		{
 			for (int i = 0; i < 4; i++)
-				field[backup[i].y][backup[i].x] = color;
+				field[backup[i].y][backup[i].x] = currentcolor;
 			nextTetrimino();
 		}
 		startTime = SDL_GetTicks();
