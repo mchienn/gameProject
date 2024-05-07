@@ -7,13 +7,13 @@ Menu::Menu(SDL_Renderer *renderer)
     state = MENU;
     this->renderer = renderer;
     loadTextures();
-    instructions = new Text(renderer, "img/gomarice_mix_bit_font.ttf",  LargeText, "        Instructions", textcolor);
-    moveRL = new Text(renderer, "img/gomarice_mix_bit_font.ttf",        SmallText, "Move Left/Right:      Left/Right Arrow", textcolor);
-    rotateblock = new Text(renderer, "img/gomarice_mix_bit_font.ttf",   SmallText, "Rotate:                            Z ", textcolor);
-    softdrop = new Text(renderer, "img/gomarice_mix_bit_font.ttf",      SmallText, "Soft Drop:                     Down Arrow", textcolor);
-    harddrop = new Text(renderer, "img/gomarice_mix_bit_font.ttf",      SmallText, "Hard Drop:                     Space", textcolor);
-    pause_play = new Text(renderer, "img/gomarice_mix_bit_font.ttf",    SmallText, "Pause/Play:                  P", textcolor);
-    instant_quit = new Text(renderer, "img/gomarice_mix_bit_font.ttf",  SmallText, "Instant quit:               ESC", textcolor);
+    instructions = new Text(renderer, "img//font/gomarice_mix_bit_font.ttf",  LargeText, "        Instructions", textcolor);
+    moveRL = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",        SmallText, "Move Left/Right:      Left/Right Arrow", textcolor);
+    rotateblock = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",   SmallText, "Rotate:                            Z ", textcolor);
+    softdrop = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",      SmallText, "Soft Drop:                     Down Arrow", textcolor);
+    harddrop = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",      SmallText, "Hard Drop:                     Space", textcolor);
+    pause_play = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",    SmallText, "Pause/Play:                  P", textcolor);
+    instant_quit = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",  SmallText, "Instant quit:               ESC", textcolor);
 }
 
 Menu::~Menu()
@@ -270,6 +270,7 @@ void Menu::handleEvents()
                     state = MENU;
                 }
             }
+
             break;
         }
 }

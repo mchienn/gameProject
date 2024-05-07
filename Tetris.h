@@ -45,6 +45,7 @@ public:
 	void updateRender();
 	void clean();
 	void startGame();
+	void renderbutton();
 
 
 	bool isAlive = true;
@@ -56,6 +57,14 @@ private:
 	SDL_Renderer *render = NULL;
 	SDL_Texture *background = NULL, *blocks = NULL;
 	SDL_Rect srcR = {0, 0, BlockW, BlockH}, destR = {0, 0, 36, 36};
+
+	SDL_Texture *playingame;
+	SDL_Texture *redplayingame;
+	SDL_Texture *pauseingame;
+	SDL_Texture *redpauseingame;
+	SDL_Texture *home;
+	SDL_Texture *redhome;
+
 
 	bool running = false;
 

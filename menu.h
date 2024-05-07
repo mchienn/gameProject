@@ -17,8 +17,10 @@ public:
     void handleEvents();
     int getState() {return state;}
 
-private:
     int state;
+
+private:
+
     bool ismusic = true;
     bool issound = true;
 

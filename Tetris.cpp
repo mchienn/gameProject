@@ -31,8 +31,7 @@ bool Tetris::init(const char *title)
 				if ((initted & imgFlags) != imgFlags)
 					std::cout << "Failed to init required png support\n"
 							  << "IMG_Init() Error : " << IMG_GetError() << std::endl;
-                		menu = new Menu(render);
-
+				menu = new Menu(render);
 			}
 			else
 				return false;
@@ -47,26 +46,73 @@ bool Tetris::init(const char *title)
 	return true;
 }
 
+void Tetris::renderbutton()
+{
+	SDL_Rect pauseplay = {50, 75, 50, 50};
+	SDL_Rect homebut = {125, 75, 50, 50};
+
+	if (pauseingame == NULL)
+	{
+		SDL_Log("Error \%s", SDL_GetError());
+	}
+
+	int mouseX, mouseY;
+	SDL_GetMouseState(&mouseX, &mouseY);
+	if (isPause == false)
+	{
+		if (mouseX >= 50 && mouseX <= 50 + 50 &&
+			mouseY >= 75 && mouseY <= 75 + 50)
+		{
+			SDL_RenderCopy(render, redpauseingame, NULL, &pauseplay);
+		}
+		else
+		{
+			SDL_RenderCopy(render, pauseingame, NULL, &pauseplay);
+		}
+	}
+	else
+	{
+		if (mouseX >= 50 && mouseX <= 50 + 50 &&
+			mouseY >= 75 && mouseY <= 75 + 50)
+		{
+			SDL_RenderCopy(render, redplayingame, NULL, &pauseplay);
+		}
+		else
+		{
+			SDL_RenderCopy(render, playingame, NULL, &pauseplay);
+		}
+	}
+
+	if (mouseX >= 125 && mouseX <= 125 + 50 &&
+		mouseY >= 75 && mouseY <= 75 + 50)
+	{
+		SDL_RenderCopy(render, redhome, NULL, &homebut);
+	}
+	else
+	{
+		SDL_RenderCopy(render, home, NULL, &homebut);
+	}
+
+	SDL_RenderPresent(render);
+}
+
 void Tetris::nextTetrimino()
 {
-
 
 	int n = rand() % 7;
 
 	for (int i = 0; i < 4; i++)
-    {
-        items[i] = next[i];
-    }
-    currentcolor = lastcolor;
-    lastcolor = 1 + n;
-
-
+	{
+		items[i] = next[i];
+	}
+	currentcolor = lastcolor;
+	lastcolor = 1 + n;
 
 	for (int i = 0; i < 4; i++)
-    {
-        next[i].x = figures[n][i] % 4;
-        next[i].y = (int)(figures[n][i] / 4);
-    }
+	{
+		next[i].x = figures[n][i] % 4;
+		next[i].y = (int)(figures[n][i] / 4);
+	}
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -86,8 +132,53 @@ void Tetris::handleEvents()
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
+		int x = e.button.x;
+		int y = e.button.y;
+
 		switch (e.type)
 		{
+		case SDL_MOUSEBUTTONDOWN:
+		{
+			if (x >= 50 && x <= 50 + 50 &&
+				y >= 75 && y <= 75 + 50)
+			{
+				isPause = !isPause;
+				while (isPause && SDL_WaitEvent(&e))
+				{
+					renderbutton();
+
+					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_p)
+					{
+						isPause = false;
+						break;
+					}
+					if (e.type == SDL_MOUSEBUTTONDOWN)
+					{
+						x = e.button.x;
+						y = e.button.y;
+						if (x >= 50 && x <= 50 + 50 &&
+							y >= 75 && y <= 75 + 50)
+						{
+							isPause = false;
+							break;
+						}
+						if (x >= 125 && x <= 125 + 50 &&
+							y >= 75 && y <= 75 + 50)
+						{
+							menu->state = MENU;
+							break;
+						}
+					}
+				}
+			}
+			if (x >= 125 && x <= 125 + 50 &&
+				y >= 75 && y <= 75 + 50)
+			{
+				menu->state = MENU;
+				isPause = false;
+			}
+			break;
+		}
 		case SDL_QUIT:
 			running = false;
 			break;
@@ -104,29 +195,40 @@ void Tetris::handleEvents()
 				dx = 1;
 				break;
 			case SDLK_p:
-				isPause = (isPause == true ? false : true);
-				if (isPause == true)
+				isPause = !isPause;
+				while (isPause && SDL_WaitEvent(&e))
 				{
-					while (SDL_WaitEvent(&e))
+					renderbutton();
+
+					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_p)
 					{
-						if (e.type == SDL_KEYDOWN)
+						isPause = false;
+						break;
+					}
+					if (e.type == SDL_MOUSEBUTTONDOWN)
+					{
+						x = e.button.x;
+						y = e.button.y;
+						if (x >= 50 && x <= 50 + 50 &&
+							y >= 75 && y <= 75 + 50)
 						{
-							if (e.key.keysym.sym == SDLK_p)
-							{
-								break;
-							}
+							isPause = false;
+							break;
+						}
+						if (x >= 125 && x <= 125 + 50 &&
+							y >= 75 && y <= 75 + 50)
+						{
+							menu->state = MENU;
+							isPause = false;
+							break;
 						}
 					}
-					isPause = false;
 				}
 				break;
 			case SDLK_ESCAPE:
-				// instantly quit the game
 				running = false;
 				break;
-
 			case SDLK_SPACE:
-				// instantly drop
 				instantDrop();
 				break;
 			default:
@@ -248,13 +350,12 @@ void Tetris::updateRender()
 
 	SDL_RenderCopy(render, background, NULL, NULL);
 
-    for (int i = 0; i < 4; i++)
-    {
-        setRectPos(srcR, lastcolor * BlockW, 0);
-        setRectPos(destR, 410 + next[i].x * BlockW, 300 + next[i].y * BlockH);
-        SDL_RenderCopy(render, blocks, &srcR, &destR);
-    }
-
+	for (int i = 0; i < 4; i++)
+	{
+		setRectPos(srcR, lastcolor * BlockW, 0);
+		setRectPos(destR, 410 + next[i].x * BlockW, 300 + next[i].y * BlockH);
+		SDL_RenderCopy(render, blocks, &srcR, &destR);
+	}
 
 	for (int i = 0; i < Lines; i++)
 		for (int j = 0; j < Cols; j++)
@@ -273,6 +374,7 @@ void Tetris::updateRender()
 		SDL_RenderCopy(render, blocks, &srcR, &destR);
 	}
 
+	renderbutton();
 	SDL_RenderPresent(render);
 }
 
@@ -322,14 +424,20 @@ void Tetris::startGame()
 	blocks = SDL_CreateTextureFromSurface(render, loadSurf);
 	SDL_FreeSurface(loadSurf);
 
+	playingame = IMG_LoadTexture(render, "img/playingame.png");
+	redplayingame = IMG_LoadTexture(render, "img/redplayingame.png");
+	pauseingame = IMG_LoadTexture(render, "img/pauseingame.png");
+	redpauseingame = IMG_LoadTexture(render, "img/redpauseingame.png");
+	home = IMG_LoadTexture(render, "img/home.png");
+	redhome = IMG_LoadTexture(render, "img/redhome.png");
 
-    int n = rand() % 7;
+	int n = rand() % 7;
 
-    for (int i = 0; i < 4; i++)
-    {
-        next[i].x = figures[n][i] % 4;
-        next[i].y = (int)(figures[n][i] / 4);
-    }
+	for (int i = 0; i < 4; i++)
+	{
+		next[i].x = figures[n][i] % 4;
+		next[i].y = (int)(figures[n][i] / 4);
+	}
 
 	for (int i = 0; i < 4; i++)
 	{
