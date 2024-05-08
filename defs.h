@@ -32,6 +32,8 @@
 #define Render_BlockW 32
 #define Render_BlockH 32
 
+const std::string font_path = "font/gomarice_mix_bit_font.ttf";
+
 enum STATES {ACESS, MENU, PLAY, INSTRUCTIONS, GAMEOVER,  ALL};
 
 #endif // _DEFS_H

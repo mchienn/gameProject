@@ -14,6 +14,7 @@ public:
 
     void show();
     void showins();
+    void showover();
     void handleEvents();
     int getState() {return state;}
 
@@ -54,11 +55,15 @@ private:
     SDL_Texture *muteSoundButton;
     SDL_Texture *redmuteSoundButton;
 
+    SDL_Texture *menuButton;
+    SDL_Texture *redmenuButton;
 
     SDL_Texture *menuBack;
 
     void loadTextures();
     void freeTextures();
+
+    Text* gameover;
 
     Text* instructions;
     Text* moveRL;

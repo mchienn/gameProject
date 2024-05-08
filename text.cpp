@@ -32,3 +32,11 @@ SDL_Texture* Text::loadFont(SDL_Renderer* renderer, const std::string& font_path
     TTF_CloseFont(font);
     return texture;
 }
+
+void Text::update(SDL_Renderer* renderer, const std::string& new_message, const std::string& font_path, int font_size, const SDL_Color& color)
+{
+    SDL_DestroyTexture(_message);
+    _message = loadFont(renderer, font_path, font_size, new_message, color);
+    SDL_QueryTexture(_message, nullptr, nullptr, &_message_rect.w, &_message_rect.h);
+}
+

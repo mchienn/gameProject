@@ -52,6 +52,16 @@ public:
 
     Menu *menu;
 
+    Text* scoreText;
+
+    Text* highscoreText;
+
+    int isstart = 0;
+
+    int score = 0;
+
+    int highscore = 0;
+
 private:
 	SDL_Window *window = NULL;
 	SDL_Renderer *render = NULL;

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "Tetris.h"
 /*
 	0	1	2	3
@@ -32,6 +33,15 @@ bool Tetris::init(const char *title)
 					std::cout << "Failed to init required png support\n"
 							  << "IMG_Init() Error : " << IMG_GetError() << std::endl;
 				menu = new Menu(render);
+				scoreText = new Text(render, "font/gomarice_mix_bit_font.ttf", SmallText, "Score         : 0", {255, 255, 255, 255});
+				highscoreText = new Text (render, "font/gomarice_mix_bit_font.ttf", SmallText, "High Score: ", {255, 255, 255, 255});
+				std::ifstream file("highscore.txt");
+				file >> highscore;
+                file.close();
+                std::string newMessage = "High Score : " + std::to_string(highscore);
+                highscoreText->update(render, newMessage, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
+                highscoreText->display(200, 75, render);
+
 			}
 			else
 				return false;
@@ -48,8 +58,8 @@ bool Tetris::init(const char *title)
 
 void Tetris::renderbutton()
 {
-	SDL_Rect pauseplay = {50, 75, 50, 50};
-	SDL_Rect homebut = {125, 75, 50, 50};
+	SDL_Rect pauseplay = {50, 75, SquareButtonW, SquareButtonH};
+	SDL_Rect homebut = {125, 75, SquareButtonW, SquareButtonH};
 
 	if (pauseingame == NULL)
 	{
@@ -60,8 +70,8 @@ void Tetris::renderbutton()
 	SDL_GetMouseState(&mouseX, &mouseY);
 	if (isPause == false)
 	{
-		if (mouseX >= 50 && mouseX <= 50 + 50 &&
-			mouseY >= 75 && mouseY <= 75 + 50)
+		if (mouseX >= 50 && mouseX <= 50 + SquareButtonW &&
+			mouseY >= 75 && mouseY <= 75 + SquareButtonH)
 		{
 			SDL_RenderCopy(render, redpauseingame, NULL, &pauseplay);
 		}
@@ -72,8 +82,8 @@ void Tetris::renderbutton()
 	}
 	else
 	{
-		if (mouseX >= 50 && mouseX <= 50 + 50 &&
-			mouseY >= 75 && mouseY <= 75 + 50)
+		if (mouseX >= 50 && mouseX <= 50 + SquareButtonW &&
+			mouseY >= 75 && mouseY <= 75 + SquareButtonH)
 		{
 			SDL_RenderCopy(render, redplayingame, NULL, &pauseplay);
 		}
@@ -83,8 +93,8 @@ void Tetris::renderbutton()
 		}
 	}
 
-	if (mouseX >= 125 && mouseX <= 125 + 50 &&
-		mouseY >= 75 && mouseY <= 75 + 50)
+	if (mouseX >= 125 && mouseX <= 125 + SquareButtonW &&
+		mouseY >= 75 && mouseY <= 75 + SquareButtonH)
 	{
 		SDL_RenderCopy(render, redhome, NULL, &homebut);
 	}
@@ -98,6 +108,7 @@ void Tetris::renderbutton()
 
 void Tetris::nextTetrimino()
 {
+    score += 10;
 
 	int n = rand() % 7;
 
@@ -122,7 +133,15 @@ void Tetris::nextTetrimino()
 
 	if (isGameOver())
 	{
-		running = false;
+		menu->state = GAMEOVER;
+		isstart = 0;
+		for (int i = 0; i < Lines; i ++)
+        {
+            for (int j = 0; j < Cols; j ++)
+            {
+                field[i][j] = 0;
+            }
+        }
 		return;
 	}
 }
@@ -139,8 +158,8 @@ void Tetris::handleEvents()
 		{
 		case SDL_MOUSEBUTTONDOWN:
 		{
-			if (x >= 50 && x <= 50 + 50 &&
-				y >= 75 && y <= 75 + 50)
+			if (x >= 50 && x <= 50 + SquareButtonW &&
+				y >= 75 && y <= 75 + SquareButtonH)
 			{
 				isPause = !isPause;
 				while (isPause && SDL_WaitEvent(&e))
@@ -156,14 +175,14 @@ void Tetris::handleEvents()
 					{
 						x = e.button.x;
 						y = e.button.y;
-						if (x >= 50 && x <= 50 + 50 &&
-							y >= 75 && y <= 75 + 50)
+						if (x >= 50 && x <= 50 + SquareButtonW &&
+							y >= 75 && y <= 75 + SquareButtonH)
 						{
 							isPause = false;
 							break;
 						}
-						if (x >= 125 && x <= 125 + 50 &&
-							y >= 75 && y <= 75 + 50)
+						if (x >= 125 && x <= 125 + SquareButtonW &&
+							y >= 75 && y <= 75 + SquareButtonH)
 						{
 							menu->state = MENU;
 							break;
@@ -171,8 +190,8 @@ void Tetris::handleEvents()
 					}
 				}
 			}
-			if (x >= 125 && x <= 125 + 50 &&
-				y >= 75 && y <= 75 + 50)
+			if (x >= 125 && x <= 125 + SquareButtonW &&
+				y >= 75 && y <= 75 + SquareButtonH)
 			{
 				menu->state = MENU;
 				isPause = false;
@@ -209,14 +228,14 @@ void Tetris::handleEvents()
 					{
 						x = e.button.x;
 						y = e.button.y;
-						if (x >= 50 && x <= 50 + 50 &&
-							y >= 75 && y <= 75 + 50)
+						if (x >= 50 && x <= 50 + SquareButtonW &&
+							y >= 75 && y <= 75 + SquareButtonH)
 						{
 							isPause = false;
 							break;
 						}
-						if (x >= 125 && x <= 125 + 50 &&
-							y >= 75 && y <= 75 + 50)
+						if (x >= 125 && x <= 125 + SquareButtonW &&
+							y >= 75 && y <= 75 + SquareButtonH)
 						{
 							menu->state = MENU;
 							isPause = false;
@@ -337,6 +356,11 @@ void Tetris::gameplay()
 				count++;
 			field[k][j] = field[i][j];
 		}
+
+        if (count == Cols)
+        {
+            score += 100;
+        }
 		if (count < Cols)
 			k--;
 	}
@@ -349,6 +373,24 @@ void Tetris::updateRender()
 {
 
 	SDL_RenderCopy(render, background, NULL, NULL);
+
+
+    std::string newMessage = "Score            : " + std::to_string(score);
+    scoreText->update(render, newMessage, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
+    scoreText->display(200, 105, render);
+
+    if (score > highscore)
+    {
+        highscore = score;
+        std::ofstream file ("highscore.txt");
+        file << highscore;
+        file.close();
+    }
+
+    std::string newHighscore = "High Score : " + std::to_string(highscore);
+    highscoreText->update(render, newHighscore, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
+    highscoreText->display(200, 75, render);
+
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -400,6 +442,7 @@ void Tetris::instantDrop()
 			for (int i = 0; i < 4; i++)
 				field[backup[i].y][backup[i].x] = currentcolor;
 			nextTetrimino();
+			score += 50;
 			break;
 		}
 	}
@@ -408,14 +451,19 @@ void Tetris::instantDrop()
 bool Tetris::isGameOver()
 {
 	for (int x = 0; x < Cols; x++)
-		if (field[1][x] != 0) // check if there is a block in the top row
+		if (field[1][x] != 0)
+		{
 			return true;
+		}
 	return false;
 }
 
 void Tetris::startGame()
 {
+    isstart++;
+    score = 0;
 	srand(time(0));
+
 	// load the images (background and blocks
 	SDL_Surface *loadSurf = IMG_Load("img/background2.png");
 	background = SDL_CreateTextureFromSurface(render, loadSurf);

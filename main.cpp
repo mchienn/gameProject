@@ -7,7 +7,6 @@ int main(int argc, char *argv[])
 	srand(time(0));
 	Tetris *tetris = new Tetris();
 	const char *title = "Tetris";
-	int counT = 0;
 	if (tetris->init(title))
 	{
 		while (tetris->isrunning())
@@ -23,13 +22,17 @@ int main(int argc, char *argv[])
 			    tetris->menu->showins();
 			    tetris->menu->handleEvents();
 			}
+			else if (tetris->menu->getState() == GAMEOVER)
+            {
+                tetris->menu->showover();
+                tetris->menu->handleEvents();
+            }
 			else if (tetris->menu->getState() == PLAY)
 			{
-				if (counT == 0)
+				if (tetris->isstart == 0)
                 {
                     tetris->nextTetrimino();
                     tetris->startGame();
-                    counT++;
                 }
 				tetris->handleEvents();
 				tetris->gameplay();

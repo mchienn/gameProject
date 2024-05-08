@@ -11,6 +11,7 @@ public:
     Text(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message_text, const SDL_Color &color);
     void display(int x, int y, SDL_Renderer *renderer);
     static SDL_Texture *loadFont(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message_text, const SDL_Color &color);
+    void update(SDL_Renderer* renderer, const std::string& new_message, const std::string& font_path, int font_size, const SDL_Color& color);
     SDL_Texture *_message;
     SDL_Rect _message_rect;
 

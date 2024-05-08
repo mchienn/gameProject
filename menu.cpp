@@ -7,13 +7,14 @@ Menu::Menu(SDL_Renderer *renderer)
     state = MENU;
     this->renderer = renderer;
     loadTextures();
-    instructions = new Text(renderer, "img//font/gomarice_mix_bit_font.ttf",  LargeText, "        Instructions", textcolor);
-    moveRL = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",        SmallText, "Move Left/Right:      Left/Right Arrow", textcolor);
-    rotateblock = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",   SmallText, "Rotate:                            Z ", textcolor);
-    softdrop = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",      SmallText, "Soft Drop:                     Down Arrow", textcolor);
-    harddrop = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",      SmallText, "Hard Drop:                     Space", textcolor);
-    pause_play = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",    SmallText, "Pause/Play:                  P", textcolor);
-    instant_quit = new Text(renderer, "img/font/gomarice_mix_bit_font.ttf",  SmallText, "Instant quit:               ESC", textcolor);
+    instructions = new Text(renderer, "font/gomarice_mix_bit_font.ttf",  LargeText, "        Instructions", textcolor);
+    moveRL = new Text(renderer, "font/gomarice_mix_bit_font.ttf",        SmallText, "Move Left/Right:      Left/Right Arrow", textcolor);
+    rotateblock = new Text(renderer, "font/gomarice_mix_bit_font.ttf",   SmallText, "Rotate:                            Z ", textcolor);
+    softdrop = new Text(renderer, "font/gomarice_mix_bit_font.ttf",      SmallText, "Soft Drop:                     Down Arrow", textcolor);
+    harddrop = new Text(renderer, "font/gomarice_mix_bit_font.ttf",      SmallText, "Hard Drop:                     Space", textcolor);
+    pause_play = new Text(renderer, "font/gomarice_mix_bit_font.ttf",    SmallText, "Pause/Play:                  P", textcolor);
+    instant_quit = new Text(renderer, "font/gomarice_mix_bit_font.ttf",  SmallText, "Instant quit:               ESC", textcolor);
+    gameover = new Text (renderer, "font/gomarice_mix_bit_font.ttf", LargeText, "YOU LOSE !!!  GAME OVER", textcolor);
 }
 
 Menu::~Menu()
@@ -51,6 +52,9 @@ void Menu::loadTextures()
     muteSoundButton = IMG_LoadTexture(renderer, "img/mute_sound.png");
     redmuteSoundButton = IMG_LoadTexture (renderer, "img/redmute_sound.png");
 
+    menuButton = IMG_LoadTexture (renderer, "img/menu.png");
+    redmenuButton = IMG_LoadTexture(renderer, "img/redmenu.png");
+
     if (musicButton == NULL)
     {
         SDL_Log ("Error music \%s", SDL_GetError());
@@ -67,6 +71,49 @@ void Menu::freeTextures()
     SDL_DestroyTexture(redinstructionsButton);
     SDL_DestroyTexture(backbutton);
     SDL_DestroyTexture(redbackbutton);
+}
+
+void Menu::showover()
+{
+    SDL_RenderClear(renderer);
+
+    SDL_RenderCopy(renderer, menuBack, NULL, NULL);
+
+    SDL_Rect rect = {225, 335, RectButtonW, RectButtonH};
+
+    gameover->display(SmallMargin, 175, renderer);
+
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    {
+        //menu button
+        if (mouseX >= 225 && mouseX <= 225 + RectButtonW &&
+            mouseY >= 335 && mouseY <= 335 + RectButtonH)
+        {
+            SDL_Rect redrect = {225, 335, RectButtonW, RectButtonH};
+            SDL_RenderCopy(renderer, redmenuButton, NULL, &redrect);
+        }
+        else
+        {
+            SDL_RenderCopy(renderer, menuButton, NULL, &rect);
+        }
+
+        //quit
+        if (mouseX >= 225 && mouseX <= 225 + RectButtonW &&
+            mouseY >= 435 && mouseY <= 435 + RectButtonH)
+        {
+            SDL_Rect redrect = {225, 435, RectButtonW, RectButtonH};
+            SDL_RenderCopy(renderer, redquitButton, NULL, &redrect);
+        }
+        else
+        {
+            SDL_Rect ins = rect;
+            ins.y += 100;
+            SDL_RenderCopy(renderer, quitButton, NULL, &ins);
+        }
+    }
+
+    SDL_RenderPresent(renderer);
 }
 
 void Menu::showins()
@@ -113,7 +160,7 @@ void Menu::show()
 
     SDL_RenderCopy(renderer, menuBack, NULL, NULL);
 
-    SDL_Rect logorect = {LargeMargin, LargeMargin, 290, 100};
+    SDL_Rect logorect = {155, LargeMargin, 290, 100};
 
     SDL_RenderCopy(renderer, logo, NULL, &logorect);
 
@@ -122,6 +169,7 @@ void Menu::show()
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     {
+        //play button
         if (mouseX >= 225 && mouseX <= 225 + RectButtonW &&
             mouseY >= 335 && mouseY <= 335 + RectButtonH)
         {
@@ -133,6 +181,7 @@ void Menu::show()
             SDL_RenderCopy(renderer, playButton, NULL, &rect);
         }
 
+        //instructions button
         if (mouseX >= 225 && mouseX <= 225 + RectButtonW &&
             mouseY >= 435 && mouseY <= 435 + RectButtonH)
         {
@@ -146,6 +195,7 @@ void Menu::show()
             SDL_RenderCopy(renderer, instructionsButton, NULL, &ins);
         }
 
+        //quit button
         if (mouseX >= 225 && mouseX <= 225 + RectButtonW &&
             mouseY >= 535 && mouseY <= 535 + RectButtonH)
         {
@@ -248,6 +298,7 @@ void Menu::handleEvents()
                 if (x >= 225 && x <= 225 + RectButtonW &&
                     y >= 535 && y <= 535 + RectButtonH)
                 {
+                    exit(0);
                     SDL_Quit();
                 }
 
@@ -269,6 +320,22 @@ void Menu::handleEvents()
                 {
                     state = MENU;
                 }
+            }
+            else if (state == GAMEOVER)
+            {
+                if (x >= 225 && x <= 225 + RectButtonW &&
+                    y >= 335 && y <= 335 + RectButtonH)
+                {
+                    state = MENU;
+                }
+
+
+                if (x >= 225 && x <= 225 + RectButtonW &&
+                    y >= 435 && y <= 435 + RectButtonH)
+                {
+                    exit(0);
+                }
+
             }
 
             break;
