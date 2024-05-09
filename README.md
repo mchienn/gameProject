@@ -12,5 +12,5 @@ Features:
  - Sound (done)
  - Score + High Score (done)
  - GameOver -> Retry (done)
- - Level select in Control (Normal / Hard)
+ - Level select in Control (Normal / Hard) (done)
  - 
