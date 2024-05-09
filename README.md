@@ -9,6 +9,7 @@ Features:
  - Graphics (done)
  - Pause/Play (done)
  - Menu (done)
- - Sound
- - Score + High Score
- - GameOver -> Retry
+ - Sound (done)
+ - Score + High Score (done)
+ - GameOver -> Retry (done)
+ - 
