@@ -22,23 +22,21 @@ int main(int argc, char *argv[])
 		    }
 
 
-			if (tetris->menu->getState() == MENU)
-			{
+		    switch (tetris->menu->getState())
+		    {
+			case MENU:
 				tetris->menu->show();
 				tetris->menu->handleEvents();
-			}
-			else if (tetris->menu->getState() == INSTRUCTIONS)
-			{
+				break;
+			case INSTRUCTIONS:
 			    tetris->menu->showins();
 			    tetris->menu->handleEvents();
-			}
-			else if (tetris->menu->getState() == GAMEOVER)
-            {
+                break;
+			case GAMEOVER:
                 tetris->menu->showover();
                 tetris->menu->handleEvents();
-            }
-			else if (tetris->menu->getState() == PLAY)
-			{
+                break;
+			case PLAY:
 				if (tetris->isstart == 0)
                 {
                     tetris->nextTetrimino();
@@ -47,7 +45,10 @@ int main(int argc, char *argv[])
 				tetris->handleEvents();
 				tetris->gameplay();
 				tetris->updateRender();
-			}
+				break;
+            default:
+                break;
+		    }
 			tetris->setCurrentTime(SDL_GetTicks());
 		}
 	}
