@@ -33,6 +33,21 @@ bool Tetris::init(const char *title)
 					std::cout << "Failed to init required png support\n"
 							  << "IMG_Init() Error : " << IMG_GetError() << std::endl;
 				menu = new Menu(render);
+				music = new MixerManager();
+				buttonclick = new MixerManager();
+				buttonclick->loadEffect("audio/buttonclick.wav");
+
+				rotateblock = new MixerManager();
+				rotateblock->loadEffect("audio/rotate.wav");
+
+                harddrop = new MixerManager();
+                harddrop->loadEffect("audio/harddrop.wav");
+
+                clearrow = new MixerManager();
+                clearrow->loadEffect("audio/clear.wav");
+
+                music->playMusic("audio/Tetris.mp3");
+
 				scoreText = new Text(render, "font/gomarice_mix_bit_font.ttf", SmallText, "Score         : 0", {255, 255, 255, 255});
 				highscoreText = new Text (render, "font/gomarice_mix_bit_font.ttf", SmallText, "High Score: ", {255, 255, 255, 255});
 				std::ifstream file("highscore.txt");
@@ -40,7 +55,7 @@ bool Tetris::init(const char *title)
                 file.close();
                 std::string newMessage = "High Score : " + std::to_string(highscore);
                 highscoreText->update(render, newMessage, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
-                highscoreText->display(200, 75, render);
+                highscoreText->display(200, 30, render);
 
 			}
 			else
@@ -58,8 +73,8 @@ bool Tetris::init(const char *title)
 
 void Tetris::renderbutton()
 {
-	SDL_Rect pauseplay = {50, 75, SquareButtonW, SquareButtonH};
-	SDL_Rect homebut = {125, 75, SquareButtonW, SquareButtonH};
+	SDL_Rect pauseplay = {25, 30, SquareButtonW, SquareButtonH};
+	SDL_Rect homebut = {100, 30, SquareButtonW, SquareButtonH};
 
 	if (pauseingame == NULL)
 	{
@@ -70,8 +85,8 @@ void Tetris::renderbutton()
 	SDL_GetMouseState(&mouseX, &mouseY);
 	if (isPause == false)
 	{
-		if (mouseX >= 50 && mouseX <= 50 + SquareButtonW &&
-			mouseY >= 75 && mouseY <= 75 + SquareButtonH)
+		if (mouseX >= 25 && mouseX <= 25 + SquareButtonW &&
+			mouseY >= 30 && mouseY <= 30 + SquareButtonH)
 		{
 			SDL_RenderCopy(render, redpauseingame, NULL, &pauseplay);
 		}
@@ -82,8 +97,8 @@ void Tetris::renderbutton()
 	}
 	else
 	{
-		if (mouseX >= 50 && mouseX <= 50 + SquareButtonW &&
-			mouseY >= 75 && mouseY <= 75 + SquareButtonH)
+		if (mouseX >= 25 && mouseX <= 25 + SquareButtonW &&
+			mouseY >= 30 && mouseY <= 30 + SquareButtonH)
 		{
 			SDL_RenderCopy(render, redplayingame, NULL, &pauseplay);
 		}
@@ -93,8 +108,8 @@ void Tetris::renderbutton()
 		}
 	}
 
-	if (mouseX >= 125 && mouseX <= 125 + SquareButtonW &&
-		mouseY >= 75 && mouseY <= 75 + SquareButtonH)
+	if (mouseX >= 100 && mouseX <= 100 + SquareButtonW &&
+		mouseY >= 30 && mouseY <= 30 + SquareButtonH)
 	{
 		SDL_RenderCopy(render, redhome, NULL, &homebut);
 	}
@@ -151,6 +166,22 @@ void Tetris::handleEvents()
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
+	    if (menu->issound == true)
+        {
+            buttonclick->effectOn();
+            rotateblock->effectOn();
+            harddrop->effectOn();
+            clearrow->effectOn();
+        }
+        else
+        {
+            buttonclick->effectOff();
+            rotateblock->effectOff();
+            harddrop->effectOff();
+            clearrow->effectOff();
+        }
+
+
 		int x = e.button.x;
 		int y = e.button.y;
 
@@ -158,9 +189,10 @@ void Tetris::handleEvents()
 		{
 		case SDL_MOUSEBUTTONDOWN:
 		{
-			if (x >= 50 && x <= 50 + SquareButtonW &&
-				y >= 75 && y <= 75 + SquareButtonH)
+			if (x >= 25 && x <= 25 + SquareButtonW &&
+				y >= 30 && y <= 30 + SquareButtonH)
 			{
+			    buttonclick->playEffect();
 				isPause = !isPause;
 				while (isPause && SDL_WaitEvent(&e))
 				{
@@ -168,6 +200,7 @@ void Tetris::handleEvents()
 
 					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_p)
 					{
+					    buttonclick->playEffect();
 						isPause = false;
 						break;
 					}
@@ -175,45 +208,53 @@ void Tetris::handleEvents()
 					{
 						x = e.button.x;
 						y = e.button.y;
-						if (x >= 50 && x <= 50 + SquareButtonW &&
-							y >= 75 && y <= 75 + SquareButtonH)
+						if (x >= 25 && x <= 25 + SquareButtonW &&
+							y >= 30 && y <= 30 + SquareButtonH)
 						{
+						    buttonclick->playEffect();
 							isPause = false;
 							break;
 						}
-						if (x >= 125 && x <= 125 + SquareButtonW &&
-							y >= 75 && y <= 75 + SquareButtonH)
+						if (x >= 100 && x <= 100 + SquareButtonW &&
+							y >= 30 && y <= 30 + SquareButtonH)
 						{
+						    buttonclick->playEffect();
 							menu->state = MENU;
 							break;
 						}
 					}
 				}
 			}
-			if (x >= 125 && x <= 125 + SquareButtonW &&
-				y >= 75 && y <= 75 + SquareButtonH)
+			if (x >= 100 && x <= 100 + SquareButtonW &&
+				y >= 30 && y <= 30 + SquareButtonH)
 			{
+			    buttonclick->playEffect();
 				menu->state = MENU;
 				isPause = false;
 			}
 			break;
 		}
 		case SDL_QUIT:
+		    buttonclick->playEffect();
 			running = false;
 			break;
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym)
 			{
 			case SDLK_z:
+			    rotateblock->playEffect();
 				rotate = true;
 				break;
 			case SDLK_LEFT:
+			    rotateblock->playEffect();
 				dx = -1;
 				break;
 			case SDLK_RIGHT:
+			    rotateblock->playEffect();
 				dx = 1;
 				break;
 			case SDLK_p:
+			    buttonclick->playEffect();
 				isPause = !isPause;
 				while (isPause && SDL_WaitEvent(&e))
 				{
@@ -221,6 +262,7 @@ void Tetris::handleEvents()
 
 					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_p)
 					{
+					    buttonclick->playEffect();
 						isPause = false;
 						break;
 					}
@@ -228,15 +270,17 @@ void Tetris::handleEvents()
 					{
 						x = e.button.x;
 						y = e.button.y;
-						if (x >= 50 && x <= 50 + SquareButtonW &&
-							y >= 75 && y <= 75 + SquareButtonH)
+						if (x >= 25 && x <= 25 + SquareButtonW &&
+							y >= 30 && y <= 30 + SquareButtonH)
 						{
+						    buttonclick->playEffect();
 							isPause = false;
 							break;
 						}
-						if (x >= 125 && x <= 125 + SquareButtonW &&
-							y >= 75 && y <= 75 + SquareButtonH)
+						if (x >= 100 && x <= 100 + SquareButtonW &&
+							y >= 30 && y <= 30 + SquareButtonH)
 						{
+						    buttonclick->playEffect();
 							menu->state = MENU;
 							isPause = false;
 							break;
@@ -245,9 +289,11 @@ void Tetris::handleEvents()
 				}
 				break;
 			case SDLK_ESCAPE:
+			    buttonclick->playEffect();
 				running = false;
 				break;
 			case SDLK_SPACE:
+			    harddrop->playEffect();
 				instantDrop();
 				break;
 			default:
@@ -346,24 +392,49 @@ void Tetris::gameplay()
 
 	// check lines
 
-	int k = Lines - 1;
-	for (int i = k; i > 0; i--)
-	{
-		int count = 0;
-		for (int j = 0; j < Cols; j++)
-		{
-			if (field[i][j] != 0)
-				count++;
-			field[k][j] = field[i][j];
-		}
+std::vector<int> rows_to_clear;
 
-        if (count == Cols)
+for (int i = Lines - 1; i > 0; i--)
+{
+    int count = 0;
+    for (int j = 0; j < Cols; j++)
+    {
+        if (field[i][j] != 0)
+            count++;
+    }
+
+    if (count == Cols)
+    {
+        rows_to_clear.push_back(i);
+    }
+}
+
+for (int row = 0; row < (int)rows_to_clear.size(); row ++)
+{
+    if (row > 0)
+    {
+        rows_to_clear[row] += row;
+    }
+
+    clearrow->playEffect();
+    for (int j = 0; j < Cols; j++)
+    {
+        field[rows_to_clear[row]][j] = 0;
+        updateRender();
+        SDL_Delay(30);
+    }
+
+    for (int i = rows_to_clear[row]; i > 0; i--)
+    {
+        for (int j = 0; j < Cols; j++)
         {
-            score += 100;
+            field[i][j] = field[i - 1][j];
         }
-		if (count < Cols)
-			k--;
-	}
+    }
+    score += 100;
+    updateRender();
+    SDL_Delay(30);
+}
 	dx = 0;
 	rotate = false;
 	delay = 300;
@@ -377,7 +448,7 @@ void Tetris::updateRender()
 
     std::string newMessage = "Score            : " + std::to_string(score);
     scoreText->update(render, newMessage, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
-    scoreText->display(200, 105, render);
+    scoreText->display(200, 60, render);
 
     if (score > highscore)
     {
@@ -389,13 +460,13 @@ void Tetris::updateRender()
 
     std::string newHighscore = "High Score : " + std::to_string(highscore);
     highscoreText->update(render, newHighscore, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
-    highscoreText->display(200, 75, render);
+    highscoreText->display(200, 30, render);
 
 
 	for (int i = 0; i < 4; i++)
 	{
 		setRectPos(srcR, lastcolor * BlockW, 0);
-		setRectPos(destR, 410 + next[i].x * BlockW, 300 + next[i].y * BlockH);
+		setRectPos(destR, 410 + next[i].x * BlockW, 240 + next[i].y * BlockH);
 		SDL_RenderCopy(render, blocks, &srcR, &destR);
 	}
 
@@ -465,7 +536,7 @@ void Tetris::startGame()
 	srand(time(0));
 
 	// load the images (background and blocks
-	SDL_Surface *loadSurf = IMG_Load("img/background2.png");
+	SDL_Surface *loadSurf = IMG_Load("img/background3.png");
 	background = SDL_CreateTextureFromSurface(render, loadSurf);
 	SDL_FreeSurface(loadSurf);
 	loadSurf = IMG_Load("img/blocks.png");

@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "text.h"
+#include "mixermanager.h"
 
 class Menu
 {
@@ -20,11 +21,10 @@ public:
 
     int state;
 
-private:
-
     bool ismusic = true;
     bool issound = true;
 
+private:
     SDL_Color textcolor = {255, 255, 255, 255};
 
     SDL_Renderer *renderer;
@@ -72,6 +72,8 @@ private:
     Text* harddrop;
     Text* pause_play;
     Text* instant_quit;
+
+    MixerManager* buttonclick;
 };
 
 #endif // MENU_H

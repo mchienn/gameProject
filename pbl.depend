@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1715156599 source:e:\code block\works\pbl\tetris.cpp
+1715214100 source:e:\code block\works\pbl\tetris.cpp
 	<iostream>
 	<fstream>
 	"Tetris.h"
 
-1715155799 e:\code block\works\pbl\tetris.h
+1715217618 e:\code block\works\pbl\tetris.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
@@ -12,22 +12,24 @@
 	<bits/stdc++.h>
 	"defs.h"
 	"menu.h"
+	"mixermanager.h"
 
-1715155903 source:e:\code block\works\pbl\main.cpp
+1715214246 source:e:\code block\works\pbl\main.cpp
 	"Tetris.h"
 	<bits/stdc++.h>
 
-1715156923 source:e:\code block\works\pbl\menu.cpp
+1715217048 source:e:\code block\works\pbl\menu.cpp
 	"Menu.h"
 	"defs.h"
 	<iostream>
 
-1715156329 e:\code block\works\pbl\menu.h
+1715216607 e:\code block\works\pbl\menu.h
 	<SDL.h>
 	<SDL_image.h>
 	"text.h"
+	"mixermanager.h"
 
-1715152891 e:\code block\works\pbl\defs.h
+1715176468 e:\code block\works\pbl\defs.h
 
 1715152858 source:e:\code block\works\pbl\text.cpp
 	"text.h"
@@ -36,4 +38,11 @@
 	<SDL.h>
 	<SDL_ttf.h>
 	<string>
+
+1715216395 source:e:\code block\works\pbl\mixermanager.cpp
+	"MixerManager.h"
+
+1715216577 e:\code block\works\pbl\mixermanager.h
+	<SDL_mixer.h>
+	<SDL.h>
 

@@ -11,6 +11,16 @@ int main(int argc, char *argv[])
 	{
 		while (tetris->isrunning())
 		{
+		    switch (tetris->menu->ismusic)
+		    {
+            case true:
+                tetris->music->continueMusic();
+                break;
+            case false:
+                tetris->music->stopMusic();
+                break;
+		    }
+
 
 			if (tetris->menu->getState() == MENU)
 			{

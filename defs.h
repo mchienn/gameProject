@@ -3,7 +3,7 @@
 
 
 #define ScreenW 600
-#define ScreenH 960
+#define ScreenH 900
 
 #define BlockW 36
 #define BlockH 36
@@ -17,6 +17,7 @@
 #define BoardW 4
 #define BoardH 2
 
+#define ExtraLargeText 70
 #define LargeText 40
 #define SmallText 23
 
@@ -27,7 +28,6 @@
 
 #define SmallMargin 50
 #define LargeMargin 115
-
 
 #define Render_BlockW 32
 #define Render_BlockH 32

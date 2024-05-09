@@ -5,6 +5,10 @@
 Menu::Menu(SDL_Renderer *renderer)
 {
     state = MENU;
+    ismusic = true;
+    issound = true;
+    buttonclick = new MixerManager();
+    buttonclick->loadEffect("audio/buttonclick.wav");
     this->renderer = renderer;
     loadTextures();
     instructions = new Text(renderer, "font/gomarice_mix_bit_font.ttf",  LargeText, "        Instructions", textcolor);
@@ -14,7 +18,7 @@ Menu::Menu(SDL_Renderer *renderer)
     harddrop = new Text(renderer, "font/gomarice_mix_bit_font.ttf",      SmallText, "Hard Drop:                     Space", textcolor);
     pause_play = new Text(renderer, "font/gomarice_mix_bit_font.ttf",    SmallText, "Pause/Play:                  P", textcolor);
     instant_quit = new Text(renderer, "font/gomarice_mix_bit_font.ttf",  SmallText, "Instant quit:               ESC", textcolor);
-    gameover = new Text (renderer, "font/gomarice_mix_bit_font.ttf", LargeText, "YOU LOSE !!!  GAME OVER", textcolor);
+    gameover = new Text (renderer, "font/gomarice_mix_bit_font.ttf", ExtraLargeText, "  GAME OVER", textcolor);
 }
 
 Menu::~Menu()
@@ -273,7 +277,18 @@ void Menu::handleEvents()
 
     SDL_Event event;
     while (SDL_PollEvent(&event))
+    {
         // Handle button clicks
+
+        if (issound == true)
+        {
+            buttonclick->effectOn();
+        }
+        else
+        {
+            buttonclick->effectOff();
+        }
+
         switch (event.type)
         {
         case (SDL_MOUSEBUTTONDOWN):
@@ -285,6 +300,7 @@ void Menu::handleEvents()
                 if (x >= 225 && x <= 225 + RectButtonW &&
                     y >= 335 && y <= 335 + RectButtonH)
                 {
+                    buttonclick->playEffect();
                     state = PLAY;
                 }
 
@@ -292,12 +308,14 @@ void Menu::handleEvents()
                 if (x >= 225 && x <= 225 + RectButtonW &&
                     y >= 435 && y <= 435 + RectButtonH)
                 {
+                    buttonclick->playEffect();
                     state = INSTRUCTIONS;
                 }
 
                 if (x >= 225 && x <= 225 + RectButtonW &&
                     y >= 535 && y <= 535 + RectButtonH)
                 {
+                    buttonclick->playEffect();
                     exit(0);
                     SDL_Quit();
                 }
@@ -305,11 +323,13 @@ void Menu::handleEvents()
                 if (x >= 500 && x <= 500 + SquareButtonW &&
                     y >= 750 && y <= 750 + SquareButtonH)
                 {
+                    buttonclick->playEffect();
                     ismusic = (ismusic ==  true ? false :true);
                 }
                 if (x >= 500 && x <= 500 + SquareButtonW &&
                     y >= 825 && y <= 825 + SquareButtonH)
                 {
+                    buttonclick->playEffect();
                     issound = (issound == true ? false : true);
                 }
             }
@@ -318,6 +338,7 @@ void Menu::handleEvents()
                 if (x >= SmallMargin && x <= SmallMargin + SquareButtonW &&
                     y >= LargeMargin && y <= LargeMargin + SquareButtonH)
                 {
+                    buttonclick->playEffect();
                     state = MENU;
                 }
             }
@@ -326,6 +347,7 @@ void Menu::handleEvents()
                 if (x >= 225 && x <= 225 + RectButtonW &&
                     y >= 335 && y <= 335 + RectButtonH)
                 {
+                    buttonclick->playEffect();
                     state = MENU;
                 }
 
@@ -333,6 +355,7 @@ void Menu::handleEvents()
                 if (x >= 225 && x <= 225 + RectButtonW &&
                     y >= 435 && y <= 435 + RectButtonH)
                 {
+                    buttonclick->playEffect();
                     exit(0);
                 }
 
@@ -340,4 +363,5 @@ void Menu::handleEvents()
 
             break;
         }
+    }
 }

@@ -9,6 +9,7 @@
 #include <bits/stdc++.h>
 #include "defs.h"
 #include "menu.h"
+#include "mixermanager.h"
 
 class Tetris
 {
@@ -55,6 +56,12 @@ public:
     Text* scoreText;
 
     Text* highscoreText;
+
+    MixerManager* music;
+    MixerManager* buttonclick;
+    MixerManager* rotateblock;
+    MixerManager* harddrop;
+    MixerManager* clearrow;
 
     int isstart = 0;
 
