@@ -4,6 +4,7 @@
 /*
 	0	1	2	3
 	4	5	6	7
+	8   9   10  11
 */
 const int Tetris::figures[7][4] =
 	{
@@ -15,6 +16,25 @@ const int Tetris::figures[7][4] =
 		1, 4, 5, 6, // T
 		0, 1, 5, 6, // Z
 };
+
+const int Tetris::hardfigures[10][4] =
+	{
+		0, 1, 2, 3, // I
+		0, 4, 5, 6, // J
+		2, 6, 5, 4, // L
+		1, 2, 5, 6, // O
+		2, 1, 5, 4, // S
+		1, 4, 5, 6, // T
+		0, 1, 5, 6, // Z
+
+		//special blocks
+		0, 5, 6, 3,
+		0, 5, 6, 2,
+		5, 6, 3, 11,
+
+};
+
+
 bool Tetris::init(const char *title)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
@@ -125,40 +145,88 @@ void Tetris::nextTetrimino()
 {
     score += 10;
 
-	int n = rand() % 7;
+    int n;
+    if (menu->diff == NORMAL)
+    {
+        n = rand() % 7;
+        currentcolor = lastcolor;
+        lastcolor = 1 + n;
 
-	for (int i = 0; i < 4; i++)
-	{
-		items[i] = next[i];
-	}
-	currentcolor = lastcolor;
-	lastcolor = 1 + n;
-
-	for (int i = 0; i < 4; i++)
-	{
-		next[i].x = figures[n][i] % 4;
-		next[i].y = (int)(figures[n][i] / 4);
-	}
-
-	for (int i = 0; i < 4; i++)
-	{
-		items[i].x += Cols / 2 - 2;
-		items[i].y = items[i].y;
-	}
-
-	if (isGameOver())
-	{
-		menu->state = GAMEOVER;
-		isstart = 0;
-		for (int i = 0; i < Lines; i ++)
+        for (int i = 0; i < 4; i++)
         {
-            for (int j = 0; j < Cols; j ++)
-            {
-                field[i][j] = 0;
-            }
+            items[i] = next[i];
         }
-		return;
-	}
+
+        for (int i = 0; i < 4; i++)
+        {
+            next[i].x = figures[n][i] % 4;
+            next[i].y = (int)(figures[n][i] / 4);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            items[i].x += Cols / 2 - 2;
+            items[i].y = items[i].y;
+        }
+
+        if (isGameOver())
+        {
+            menu->state = GAMEOVER;
+            isstart = 0;
+            for (int i = 0; i < Lines; i ++)
+            {
+                for (int j = 0; j < Cols; j ++)
+                {
+                    field[i][j] = 0;
+                }
+            }
+            return;
+        }
+    }
+    else
+    {
+        n = rand() % 10;
+        currentcolor = lastcolor;
+        lastcolor = 1 + rand() % 7;
+
+        for (int i = 0; i < 4; i++)
+        {
+            items[i] = next[i];
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            next[i].x = hardfigures[n][i] % 4;
+            next[i].y = (int)(hardfigures[n][i] / 4);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            items[i].x += Cols / 2 - 2;
+            items[i].y = items[i].y;
+        }
+
+        if (isGameOver())
+        {
+            menu->state = GAMEOVER;
+            isstart = 0;
+            for (int i = 0; i < Lines; i ++)
+            {
+                for (int j = 0; j < Cols; j ++)
+                {
+                    field[i][j] = 0;
+                }
+            }
+            return;
+        }
+    }
+
+
+
+
+
+
+
 }
 
 void Tetris::handleEvents()
@@ -550,6 +618,8 @@ void Tetris::startGame()
 	home = IMG_LoadTexture(render, "img/home.png");
 	redhome = IMG_LoadTexture(render, "img/redhome.png");
 
+	if (menu->diff == NORMAL)
+    {
 	int n = rand() % 7;
 
 	for (int i = 0; i < 4; i++)
@@ -563,4 +633,21 @@ void Tetris::startGame()
 		items[i].x = Cols / 2 - 2 + figures[(n + 1) % 7][i] % 4;
 		items[i].y = (int)(figures[(n + 1) % 7][i] / 4);
 	}
+    }
+    else
+    {
+        	int n = rand() % 7;
+
+	for (int i = 0; i < 4; i++)
+	{
+		next[i].x = hardfigures[n][i] % 4;
+		next[i].y = (int)(hardfigures[n][i] / 4);
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		items[i].x = Cols / 2 - 2 + hardfigures[(n + 1) % 7][i] % 4;
+		items[i].y = (int)(hardfigures[(n + 1) % 7][i] / 4);
+	}
+    }
 }

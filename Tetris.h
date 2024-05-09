@@ -91,6 +91,8 @@ private:
 
 	static const int figures[7][4];
 
+	static const int hardfigures[10][4];
+
 	struct Point
 	{
 		int x, y;

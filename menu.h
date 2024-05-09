@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include "defs.h"
 #include "text.h"
 #include "mixermanager.h"
 
@@ -20,6 +21,8 @@ public:
     int getState() {return state;}
 
     int state;
+
+    int diff = NORMAL;
 
     bool ismusic = true;
     bool issound = true;
@@ -39,6 +42,9 @@ private:
 
     SDL_Texture *backbutton;
     SDL_Texture *redbackbutton;
+
+    SDL_Texture *nextbutton;
+    SDL_Texture *rednextbutton;
 
     SDL_Texture *quitButton;
     SDL_Texture *redquitButton;
@@ -72,6 +78,10 @@ private:
     Text* harddrop;
     Text* pause_play;
     Text* instant_quit;
+
+    Text* choosediff;
+    Text* descrip;
+
 
     MixerManager* buttonclick;
 };

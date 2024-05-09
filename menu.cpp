@@ -1,5 +1,4 @@
 #include "Menu.h"
-#include "defs.h"
 #include <iostream>
 
 Menu::Menu(SDL_Renderer *renderer)
@@ -19,6 +18,8 @@ Menu::Menu(SDL_Renderer *renderer)
     pause_play = new Text(renderer, "font/gomarice_mix_bit_font.ttf",    SmallText, "Pause/Play:                  P", textcolor);
     instant_quit = new Text(renderer, "font/gomarice_mix_bit_font.ttf",  SmallText, "Instant quit:               ESC", textcolor);
     gameover = new Text (renderer, "font/gomarice_mix_bit_font.ttf", ExtraLargeText, "  GAME OVER", textcolor);
+    choosediff = new Text (renderer, "font/gomarice_mix_bit_font.ttf", LargeText, "NORMAL", textcolor);
+    descrip = new Text (renderer, "font/gomarice_mix_bit_font.ttf", SmallText, "( 3 special block extras )", textcolor);
 }
 
 Menu::~Menu()
@@ -41,6 +42,9 @@ void Menu::loadTextures()
 
     backbutton = IMG_LoadTexture(renderer, "img/back.png");
     redbackbutton = IMG_LoadTexture(renderer, "img/redback.png");
+
+    nextbutton = IMG_LoadTexture(renderer, "img/next.png");
+    rednextbutton = IMG_LoadTexture(renderer, "img/rednext.png");
 
     menuBack = IMG_LoadTexture(renderer, "img/backgroundmenu.png");
 
@@ -121,15 +125,21 @@ void Menu::showover()
 }
 
 void Menu::showins()
-{
+ {
     SDL_RenderClear(renderer);
 
     SDL_RenderCopy(renderer, menuBack, NULL, NULL);
 
     SDL_Rect rect = {SmallMargin, LargeMargin, SquareButtonW, SquareButtonH};
 
+    SDL_Rect backrect = {SmallMargin, 650, SquareButtonW, SquareButtonH};
+
+    SDL_Rect nextrect = {500, 650, SquareButtonW, SquareButtonH};
+
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
+
+
     if (mouseX >= SmallMargin && mouseX <= SmallMargin + SquareButtonW &&
         mouseY >= LargeMargin && mouseY <= LargeMargin + SquareButtonH)
     {
@@ -139,6 +149,48 @@ void Menu::showins()
     {
         SDL_RenderCopy(renderer, backbutton, NULL, &rect);
     }
+
+    if (mouseX >= SmallMargin && mouseX <= SmallMargin + SquareButtonW &&
+        mouseY >= 650 && mouseY <= 650 + SquareButtonH)
+    {
+        SDL_RenderCopy(renderer, redbackbutton, NULL, &backrect);
+    }
+    else
+    {
+        SDL_RenderCopy(renderer, backbutton, NULL, &backrect);
+    }
+
+    if (mouseX >= 500 && mouseX <= 500 + SquareButtonW &&
+        mouseY >= 650 && mouseY <= 650 + SquareButtonH)
+    {
+        SDL_RenderCopy(renderer, rednextbutton, NULL, &nextrect);
+    }
+    else
+    {
+        SDL_RenderCopy(renderer, nextbutton, NULL, &nextrect);
+    }
+
+    switch (diff)
+    {
+    case NORMAL:
+    {
+        std::string normal = "  NORMAL";
+        choosediff->update(renderer, normal, "font/gomarice_mix_bit_font.ttf", LargeText, textcolor);
+        choosediff->display(SmallMargin + 150, 650, renderer);
+        break;
+    }
+    case HARD:
+    {
+        std::string hard = "    HARD";
+        choosediff->update(renderer, hard, "font/gomarice_mix_bit_font.ttf", LargeText, textcolor);
+        descrip->display (125, 700, renderer);
+        choosediff->display(SmallMargin + 150, 650, renderer);
+        break;
+    }
+    default:
+        break;
+    }
+
 
     instructions->display(SmallMargin, 175, renderer);
 
@@ -340,6 +392,15 @@ void Menu::handleEvents()
                 {
                     buttonclick->playEffect();
                     state = MENU;
+                }
+
+                if ((x >= SmallMargin && x <= SmallMargin + SquareButtonW &&
+                    y >= 650 && y <= 650 + SquareButtonH) ||
+                    (x >= 500 && x <= 500 + SquareButtonW &&
+                    y >= 650 && y <= 650 + SquareButtonH))
+                {
+                    buttonclick->playEffect();
+                    diff = (diff == NORMAL ? HARD : NORMAL);
                 }
             }
             else if (state == GAMEOVER)
