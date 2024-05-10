@@ -48,26 +48,25 @@ public:
 	void startGame();
 	void renderbutton();
 
-
 	bool isAlive = true;
 
-    Menu *menu;
+	Menu *menu;
 
-    Text* scoreText;
+	Text *scoreText;
 
-    Text* highscoreText;
+	Text *highscoreText;
 
-    MixerManager* music;
-    MixerManager* buttonclick;
-    MixerManager* rotateblock;
-    MixerManager* harddrop;
-    MixerManager* clearrow;
+	MixerManager *music;
+	MixerManager *buttonclick;
+	MixerManager *rotateblock;
+	MixerManager *harddrop;
+	MixerManager *clearrow;
 
-    int isstart = 0;
+	int isstart = 0;
 
-    int score = 0;
+	int score = 0;
 
-    int highscore = 0;
+	int highscore = 0;
 
 private:
 	SDL_Window *window = NULL;
@@ -81,7 +80,6 @@ private:
 	SDL_Texture *redpauseingame;
 	SDL_Texture *home;
 	SDL_Texture *redhome;
-
 
 	bool running = false;
 
@@ -98,8 +96,6 @@ private:
 		int x, y;
 	} items[4], backup[4], next[4];
 
-	//int color = 1;
-
 	int lastcolor = 1;
 
 	int currentcolor = 1;
@@ -111,8 +107,6 @@ private:
 	unsigned int delay = 300;
 
 	Uint32 startTime = 0, currentTime = 0;
-
-
 };
 
 #endif // !TETRIS_H_

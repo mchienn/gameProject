@@ -27,14 +27,12 @@ const int Tetris::hardfigures[10][4] =
 		1, 4, 5, 6, // T
 		0, 1, 5, 6, // Z
 
-		//special blocks
+		// special blocks
 		0, 5, 6, 3,
+		1, 5, 6, 3,
 		0, 5, 6, 2,
-		5, 6, 3, 11,
 
 };
-
-
 bool Tetris::init(const char *title)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
@@ -60,23 +58,22 @@ bool Tetris::init(const char *title)
 				rotateblock = new MixerManager();
 				rotateblock->loadEffect("audio/rotate.wav");
 
-                harddrop = new MixerManager();
-                harddrop->loadEffect("audio/harddrop.wav");
+				harddrop = new MixerManager();
+				harddrop->loadEffect("audio/harddrop.wav");
 
-                clearrow = new MixerManager();
-                clearrow->loadEffect("audio/clear.wav");
+				clearrow = new MixerManager();
+				clearrow->loadEffect("audio/clear.wav");
 
-                music->playMusic("audio/Tetris.mp3");
+				music->playMusic("audio/Tetris.mp3");
 
 				scoreText = new Text(render, "font/gomarice_mix_bit_font.ttf", SmallText, "Score         : 0", {255, 255, 255, 255});
-				highscoreText = new Text (render, "font/gomarice_mix_bit_font.ttf", SmallText, "High Score: ", {255, 255, 255, 255});
+				highscoreText = new Text(render, "font/gomarice_mix_bit_font.ttf", SmallText, "High Score: ", {255, 255, 255, 255});
 				std::ifstream file("highscore.txt");
 				file >> highscore;
-                file.close();
-                std::string newMessage = "High Score : " + std::to_string(highscore);
-                highscoreText->update(render, newMessage, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
-                highscoreText->display(200, 30, render);
-
+				file.close();
+				std::string newMessage = "High Score : " + std::to_string(highscore);
+				highscoreText->update(render, newMessage, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
+				highscoreText->display(200, 30, render);
 			}
 			else
 				return false;
@@ -143,90 +140,83 @@ void Tetris::renderbutton()
 
 void Tetris::nextTetrimino()
 {
-    score += 10;
+	score += 10;
 
-    int n;
-    if (menu->diff == NORMAL)
-    {
-        n = rand() % 7;
-        currentcolor = lastcolor;
-        lastcolor = 1 + n;
+	int n;
+	if (menu->diff == NORMAL)
+	{
+		n = rand() % 7;
+		currentcolor = lastcolor;
+		lastcolor = 1 + n;
 
-        for (int i = 0; i < 4; i++)
-        {
-            items[i] = next[i];
-        }
+		for (int i = 0; i < 4; i++)
+		{
+			items[i] = next[i];
+		}
 
-        for (int i = 0; i < 4; i++)
-        {
-            next[i].x = figures[n][i] % 4;
-            next[i].y = (int)(figures[n][i] / 4);
-        }
+		for (int i = 0; i < 4; i++)
+		{
+			next[i].x = figures[n][i] % 4;
+			next[i].y = (int)(figures[n][i] / 4);
+		}
 
-        for (int i = 0; i < 4; i++)
-        {
-            items[i].x += Cols / 2 - 2;
-            items[i].y = items[i].y;
-        }
+		for (int i = 0; i < 4; i++)
+		{
+			items[i].x += Cols / 2 - 2;
+			items[i].y = items[i].y;
+		}
 
-        if (isGameOver())
-        {
-            menu->state = GAMEOVER;
-            isstart = 0;
-            for (int i = 0; i < Lines; i ++)
-            {
-                for (int j = 0; j < Cols; j ++)
-                {
-                    field[i][j] = 0;
-                }
-            }
-            return;
-        }
-    }
-    else
-    {
-        n = rand() % 10;
-        currentcolor = lastcolor;
-        lastcolor = 1 + rand() % 7;
+		if (isGameOver())
+		{
+			menu->state = GAMEOVER;
+			isstart = 0;
+			for (int i = 0; i < Lines; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					field[i][j] = 0;
+				}
+			}
+			return;
+		}
+	}
+	else
+	{
+		n = rand() % 10;
+		currentcolor = lastcolor;
+		lastcolor = 1 + rand() % 7;
 
-        for (int i = 0; i < 4; i++)
-        {
-            items[i] = next[i];
-        }
+		for (int i = 0; i < 4; i++)
+		{
+			items[i] = next[i];
+		}
 
-        for (int i = 0; i < 4; i++)
-        {
-            next[i].x = hardfigures[n][i] % 4;
-            next[i].y = (int)(hardfigures[n][i] / 4);
-        }
+		for (int i = 0; i < 4; i++)
+		{
+			next[i].x = hardfigures[n][i] % 4;
+			next[i].y = (int)(hardfigures[n][i] / 4);
+		}
 
-        for (int i = 0; i < 4; i++)
-        {
-            items[i].x += Cols / 2 - 2;
-            items[i].y = items[i].y;
-        }
+		for (int i = 0; i < 4; i++)
+		{
+			items[i].x += Cols / 2 - 2;
+			items[i].y = items[i].y;
+		}
 
-        if (isGameOver())
-        {
-            menu->state = GAMEOVER;
-            isstart = 0;
-            for (int i = 0; i < Lines; i ++)
-            {
-                for (int j = 0; j < Cols; j ++)
-                {
-                    field[i][j] = 0;
-                }
-            }
-            return;
-        }
-    }
-
-
-
-
-
-
-
+		if (isGameOver())
+		{
+			menu->state = GAMEOVER;
+			isstart = 0;
+			for (int i = 0; i < Lines; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					field[i][j] = 0;
+				}
+			}
+			return;
+		}
+	}
 }
 
 void Tetris::handleEvents()
@@ -234,21 +224,20 @@ void Tetris::handleEvents()
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
-	    if (menu->issound == true)
-        {
-            buttonclick->effectOn();
-            rotateblock->effectOn();
-            harddrop->effectOn();
-            clearrow->effectOn();
-        }
-        else
-        {
-            buttonclick->effectOff();
-            rotateblock->effectOff();
-            harddrop->effectOff();
-            clearrow->effectOff();
-        }
-
+		if (menu->issound == true)
+		{
+			buttonclick->effectOn();
+			rotateblock->effectOn();
+			harddrop->effectOn();
+			clearrow->effectOn();
+		}
+		else
+		{
+			buttonclick->effectOff();
+			rotateblock->effectOff();
+			harddrop->effectOff();
+			clearrow->effectOff();
+		}
 
 		int x = e.button.x;
 		int y = e.button.y;
@@ -260,7 +249,7 @@ void Tetris::handleEvents()
 			if (x >= 25 && x <= 25 + SquareButtonW &&
 				y >= 30 && y <= 30 + SquareButtonH)
 			{
-			    buttonclick->playEffect();
+				buttonclick->playEffect();
 				isPause = !isPause;
 				while (isPause && SDL_WaitEvent(&e))
 				{
@@ -268,7 +257,7 @@ void Tetris::handleEvents()
 
 					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_p)
 					{
-					    buttonclick->playEffect();
+						buttonclick->playEffect();
 						isPause = false;
 						break;
 					}
@@ -279,14 +268,14 @@ void Tetris::handleEvents()
 						if (x >= 25 && x <= 25 + SquareButtonW &&
 							y >= 30 && y <= 30 + SquareButtonH)
 						{
-						    buttonclick->playEffect();
+							buttonclick->playEffect();
 							isPause = false;
 							break;
 						}
 						if (x >= 100 && x <= 100 + SquareButtonW &&
 							y >= 30 && y <= 30 + SquareButtonH)
 						{
-						    buttonclick->playEffect();
+							buttonclick->playEffect();
 							menu->state = MENU;
 							break;
 						}
@@ -296,33 +285,33 @@ void Tetris::handleEvents()
 			if (x >= 100 && x <= 100 + SquareButtonW &&
 				y >= 30 && y <= 30 + SquareButtonH)
 			{
-			    buttonclick->playEffect();
+				buttonclick->playEffect();
 				menu->state = MENU;
 				isPause = false;
 			}
 			break;
 		}
 		case SDL_QUIT:
-		    buttonclick->playEffect();
+			buttonclick->playEffect();
 			running = false;
 			break;
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym)
 			{
 			case SDLK_z:
-			    rotateblock->playEffect();
+				rotateblock->playEffect();
 				rotate = true;
 				break;
 			case SDLK_LEFT:
-			    rotateblock->playEffect();
+				rotateblock->playEffect();
 				dx = -1;
 				break;
 			case SDLK_RIGHT:
-			    rotateblock->playEffect();
+				rotateblock->playEffect();
 				dx = 1;
 				break;
 			case SDLK_p:
-			    buttonclick->playEffect();
+				buttonclick->playEffect();
 				isPause = !isPause;
 				while (isPause && SDL_WaitEvent(&e))
 				{
@@ -330,7 +319,7 @@ void Tetris::handleEvents()
 
 					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_p)
 					{
-					    buttonclick->playEffect();
+						buttonclick->playEffect();
 						isPause = false;
 						break;
 					}
@@ -341,14 +330,14 @@ void Tetris::handleEvents()
 						if (x >= 25 && x <= 25 + SquareButtonW &&
 							y >= 30 && y <= 30 + SquareButtonH)
 						{
-						    buttonclick->playEffect();
+							buttonclick->playEffect();
 							isPause = false;
 							break;
 						}
 						if (x >= 100 && x <= 100 + SquareButtonW &&
 							y >= 30 && y <= 30 + SquareButtonH)
 						{
-						    buttonclick->playEffect();
+							buttonclick->playEffect();
 							menu->state = MENU;
 							isPause = false;
 							break;
@@ -357,11 +346,11 @@ void Tetris::handleEvents()
 				}
 				break;
 			case SDLK_ESCAPE:
-			    buttonclick->playEffect();
+				buttonclick->playEffect();
 				running = false;
 				break;
 			case SDLK_SPACE:
-			    harddrop->playEffect();
+				harddrop->playEffect();
 				instantDrop();
 				break;
 			default:
@@ -440,69 +429,75 @@ void Tetris::gameplay()
 	}
 
 	// tick
-	if (currentTime - startTime > delay)
-	{
-		for (int i = 0; i < 4; i++)
-			backup[i] = items[i];
-		for (int i = 0; i < 4; i++)
-		{
-			items[i].y++;
-		}
-		SDL_Delay(60);
-		if (!isvalid())
-		{
-			for (int i = 0; i < 4; i++)
-				field[backup[i].y][backup[i].x] = currentcolor;
-			nextTetrimino();
-		}
-		startTime = SDL_GetTicks();
-	}
+
+
+delay = 1000 - (score / 10); // giảm 100 mili giây sau mỗi 1000 điểm
+if (delay < 100) // giới hạn delay tối thiểu là 100 mili giây
+    delay = 100;
+
+if (currentTime - startTime > delay)
+{
+    for (int i = 0; i < 4; i++)
+        backup[i] = items[i];
+    for (int i = 0; i < 4; i++)
+    {
+        items[i].y++;
+    }
+    SDL_Delay(60);
+    if (!isvalid())
+    {
+        for (int i = 0; i < 4; i++)
+            field[backup[i].y][backup[i].x] = currentcolor;
+        nextTetrimino();
+    }
+    startTime = SDL_GetTicks();
+}
 
 	// check lines
 
-std::vector<int> rows_to_clear;
+	std::vector<int> rows_to_clear;
 
-for (int i = Lines - 1; i > 0; i--)
-{
-    int count = 0;
-    for (int j = 0; j < Cols; j++)
-    {
-        if (field[i][j] != 0)
-            count++;
-    }
+	for (int i = Lines - 1; i > 0; i--)
+	{
+		int count = 0;
+		for (int j = 0; j < Cols; j++)
+		{
+			if (field[i][j] != 0)
+				count++;
+		}
 
-    if (count == Cols)
-    {
-        rows_to_clear.push_back(i);
-    }
-}
+		if (count == Cols)
+		{
+			rows_to_clear.push_back(i);
+		}
+	}
 
-for (int row = 0; row < (int)rows_to_clear.size(); row ++)
-{
-    if (row > 0)
-    {
-        rows_to_clear[row] += row;
-    }
+	for (int row = 0; row < (int)rows_to_clear.size(); row++)
+	{
+		if (row > 0)
+		{
+			rows_to_clear[row] += row;
+		}
 
-    clearrow->playEffect();
-    for (int j = 0; j < Cols; j++)
-    {
-        field[rows_to_clear[row]][j] = 0;
-        updateRender();
-        SDL_Delay(30);
-    }
+		clearrow->playEffect();
+		for (int j = 0; j < Cols; j++)
+		{
+			field[rows_to_clear[row]][j] = 0;
+			updateRender();
+			SDL_Delay(30);
+		}
 
-    for (int i = rows_to_clear[row]; i > 0; i--)
-    {
-        for (int j = 0; j < Cols; j++)
-        {
-            field[i][j] = field[i - 1][j];
-        }
-    }
-    score += 100;
-    updateRender();
-    SDL_Delay(30);
-}
+		for (int i = rows_to_clear[row]; i > 0; i--)
+		{
+			for (int j = 0; j < Cols; j++)
+			{
+				field[i][j] = field[i - 1][j];
+			}
+		}
+		score += 100;
+		updateRender();
+		SDL_Delay(30);
+	}
 	dx = 0;
 	rotate = false;
 	delay = 300;
@@ -513,23 +508,21 @@ void Tetris::updateRender()
 
 	SDL_RenderCopy(render, background, NULL, NULL);
 
+	std::string newMessage = "Score            : " + std::to_string(score);
+	scoreText->update(render, newMessage, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
+	scoreText->display(200, 60, render);
 
-    std::string newMessage = "Score            : " + std::to_string(score);
-    scoreText->update(render, newMessage, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
-    scoreText->display(200, 60, render);
+	if (score > highscore)
+	{
+		highscore = score;
+		std::ofstream file("highscore.txt");
+		file << highscore;
+		file.close();
+	}
 
-    if (score > highscore)
-    {
-        highscore = score;
-        std::ofstream file ("highscore.txt");
-        file << highscore;
-        file.close();
-    }
-
-    std::string newHighscore = "High Score : " + std::to_string(highscore);
-    highscoreText->update(render, newHighscore, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
-    highscoreText->display(200, 30, render);
-
+	std::string newHighscore = "High Score : " + std::to_string(highscore);
+	highscoreText->update(render, newHighscore, "font/gomarice_mix_bit_font.ttf", SmallText, {255, 255, 255, 255});
+	highscoreText->display(200, 30, render);
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -599,11 +592,11 @@ bool Tetris::isGameOver()
 
 void Tetris::startGame()
 {
-    isstart++;
-    score = 0;
+	isstart++;
+	score = 0;
 	srand(time(0));
 
-	// load the images (background and blocks
+	// load the images (background and blocks)
 	SDL_Surface *loadSurf = IMG_Load("img/background3.png");
 	background = SDL_CreateTextureFromSurface(render, loadSurf);
 	SDL_FreeSurface(loadSurf);
@@ -619,35 +612,35 @@ void Tetris::startGame()
 	redhome = IMG_LoadTexture(render, "img/redhome.png");
 
 	if (menu->diff == NORMAL)
-    {
-	int n = rand() % 7;
-
-	for (int i = 0; i < 4; i++)
 	{
-		next[i].x = figures[n][i] % 4;
-		next[i].y = (int)(figures[n][i] / 4);
-	}
+		int n = rand() % 7;
 
-	for (int i = 0; i < 4; i++)
-	{
-		items[i].x = Cols / 2 - 2 + figures[(n + 1) % 7][i] % 4;
-		items[i].y = (int)(figures[(n + 1) % 7][i] / 4);
-	}
-    }
-    else
-    {
-        	int n = rand() % 7;
+		for (int i = 0; i < 4; i++)
+		{
+			next[i].x = figures[n][i] % 4;
+			next[i].y = (int)(figures[n][i] / 4);
+		}
 
-	for (int i = 0; i < 4; i++)
-	{
-		next[i].x = hardfigures[n][i] % 4;
-		next[i].y = (int)(hardfigures[n][i] / 4);
+		for (int i = 0; i < 4; i++)
+		{
+			items[i].x = Cols / 2 - 2 + figures[(n + 1) % 7][i] % 4;
+			items[i].y = (int)(figures[(n + 1) % 7][i] / 4);
+		}
 	}
+	else
+	{
+		int n = rand() % 7;
 
-	for (int i = 0; i < 4; i++)
-	{
-		items[i].x = Cols / 2 - 2 + hardfigures[(n + 1) % 7][i] % 4;
-		items[i].y = (int)(hardfigures[(n + 1) % 7][i] / 4);
+		for (int i = 0; i < 4; i++)
+		{
+			next[i].x = hardfigures[n][i] % 4;
+			next[i].y = (int)(hardfigures[n][i] / 4);
+		}
+
+		for (int i = 0; i < 4; i++)
+		{
+			items[i].x = Cols / 2 - 2 + hardfigures[(n + 1) % 7][i] % 4;
+			items[i].y = (int)(hardfigures[(n + 1) % 7][i] / 4);
+		}
 	}
-    }
 }

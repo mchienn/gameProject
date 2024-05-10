@@ -10,16 +10,16 @@ Menu::Menu(SDL_Renderer *renderer)
     buttonclick->loadEffect("audio/buttonclick.wav");
     this->renderer = renderer;
     loadTextures();
-    instructions = new Text(renderer, "font/gomarice_mix_bit_font.ttf",  LargeText, "        Instructions", textcolor);
-    moveRL = new Text(renderer, "font/gomarice_mix_bit_font.ttf",        SmallText, "Move Left/Right:      Left/Right Arrow", textcolor);
-    rotateblock = new Text(renderer, "font/gomarice_mix_bit_font.ttf",   SmallText, "Rotate:                            Z ", textcolor);
-    softdrop = new Text(renderer, "font/gomarice_mix_bit_font.ttf",      SmallText, "Soft Drop:                     Down Arrow", textcolor);
-    harddrop = new Text(renderer, "font/gomarice_mix_bit_font.ttf",      SmallText, "Hard Drop:                     Space", textcolor);
-    pause_play = new Text(renderer, "font/gomarice_mix_bit_font.ttf",    SmallText, "Pause/Play:                  P", textcolor);
-    instant_quit = new Text(renderer, "font/gomarice_mix_bit_font.ttf",  SmallText, "Instant quit:               ESC", textcolor);
-    gameover = new Text (renderer, "font/gomarice_mix_bit_font.ttf", ExtraLargeText, "  GAME OVER", textcolor);
-    choosediff = new Text (renderer, "font/gomarice_mix_bit_font.ttf", LargeText, "NORMAL", textcolor);
-    descrip = new Text (renderer, "font/gomarice_mix_bit_font.ttf", SmallText, "( 3 special block extras )", textcolor);
+    instructions = new Text(renderer, "font/gomarice_mix_bit_font.ttf", LargeText, "        Instructions", textcolor);
+    moveRL = new Text(renderer, "font/gomarice_mix_bit_font.ttf", SmallText, "Move Left/Right:      Left/Right Arrow", textcolor);
+    rotateblock = new Text(renderer, "font/gomarice_mix_bit_font.ttf", SmallText, "Rotate:                            Z ", textcolor);
+    softdrop = new Text(renderer, "font/gomarice_mix_bit_font.ttf", SmallText, "Soft Drop:                     Down Arrow", textcolor);
+    harddrop = new Text(renderer, "font/gomarice_mix_bit_font.ttf", SmallText, "Hard Drop:                     Space", textcolor);
+    pause_play = new Text(renderer, "font/gomarice_mix_bit_font.ttf", SmallText, "Pause/Play:                  P", textcolor);
+    instant_quit = new Text(renderer, "font/gomarice_mix_bit_font.ttf", SmallText, "Instant quit:               ESC", textcolor);
+    gameover = new Text(renderer, "font/gomarice_mix_bit_font.ttf", ExtraLargeText, "  GAME OVER", textcolor);
+    choosediff = new Text(renderer, "font/gomarice_mix_bit_font.ttf", LargeText, "NORMAL", textcolor);
+    descrip = new Text(renderer, "font/gomarice_mix_bit_font.ttf", SmallText, "( 3 special block extras )", textcolor);
 }
 
 Menu::~Menu()
@@ -48,24 +48,24 @@ void Menu::loadTextures()
 
     menuBack = IMG_LoadTexture(renderer, "img/backgroundmenu.png");
 
-    musicButton = IMG_LoadTexture (renderer, "img/music.png");
-    redmusicButton = IMG_LoadTexture (renderer, "img/redmusic.png");
+    musicButton = IMG_LoadTexture(renderer, "img/music.png");
+    redmusicButton = IMG_LoadTexture(renderer, "img/redmusic.png");
 
-    soundButton = IMG_LoadTexture (renderer, "img/sound.png");
-    redsoundButton = IMG_LoadTexture (renderer, "img/redsound.png");
+    soundButton = IMG_LoadTexture(renderer, "img/sound.png");
+    redsoundButton = IMG_LoadTexture(renderer, "img/redsound.png");
 
     muteMusicButton = IMG_LoadTexture(renderer, "img/mute_music.png");
-    redmuteMusicButton = IMG_LoadTexture (renderer, "IMG/redmute_music.png");
+    redmuteMusicButton = IMG_LoadTexture(renderer, "IMG/redmute_music.png");
 
     muteSoundButton = IMG_LoadTexture(renderer, "img/mute_sound.png");
-    redmuteSoundButton = IMG_LoadTexture (renderer, "img/redmute_sound.png");
+    redmuteSoundButton = IMG_LoadTexture(renderer, "img/redmute_sound.png");
 
-    menuButton = IMG_LoadTexture (renderer, "img/menu.png");
+    menuButton = IMG_LoadTexture(renderer, "img/menu.png");
     redmenuButton = IMG_LoadTexture(renderer, "img/redmenu.png");
 
     if (musicButton == NULL)
     {
-        SDL_Log ("Error music \%s", SDL_GetError());
+        SDL_Log("Error music \%s", SDL_GetError());
     }
 }
 
@@ -94,7 +94,7 @@ void Menu::showover()
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     {
-        //menu button
+        // menu button
         if (mouseX >= 225 && mouseX <= 225 + RectButtonW &&
             mouseY >= 335 && mouseY <= 335 + RectButtonH)
         {
@@ -106,7 +106,7 @@ void Menu::showover()
             SDL_RenderCopy(renderer, menuButton, NULL, &rect);
         }
 
-        //quit
+        // quit
         if (mouseX >= 225 && mouseX <= 225 + RectButtonW &&
             mouseY >= 435 && mouseY <= 435 + RectButtonH)
         {
@@ -125,7 +125,7 @@ void Menu::showover()
 }
 
 void Menu::showins()
- {
+{
     SDL_RenderClear(renderer);
 
     SDL_RenderCopy(renderer, menuBack, NULL, NULL);
@@ -138,7 +138,6 @@ void Menu::showins()
 
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
-
 
     if (mouseX >= SmallMargin && mouseX <= SmallMargin + SquareButtonW &&
         mouseY >= LargeMargin && mouseY <= LargeMargin + SquareButtonH)
@@ -183,14 +182,13 @@ void Menu::showins()
     {
         std::string hard = "    HARD";
         choosediff->update(renderer, hard, "font/gomarice_mix_bit_font.ttf", LargeText, textcolor);
-        descrip->display (125, 700, renderer);
+        descrip->display(125, 700, renderer);
         choosediff->display(SmallMargin + 150, 650, renderer);
         break;
     }
     default:
         break;
     }
-
 
     instructions->display(SmallMargin, 175, renderer);
 
@@ -221,11 +219,11 @@ void Menu::show()
     SDL_RenderCopy(renderer, logo, NULL, &logorect);
 
     // Render the buttons
-    SDL_Rect rect  = {225, 335, RectButtonW, RectButtonH};
+    SDL_Rect rect = {225, 335, RectButtonW, RectButtonH};
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     {
-        //play button
+        // play button
         if (mouseX >= 225 && mouseX <= 225 + RectButtonW &&
             mouseY >= 335 && mouseY <= 335 + RectButtonH)
         {
@@ -237,7 +235,7 @@ void Menu::show()
             SDL_RenderCopy(renderer, playButton, NULL, &rect);
         }
 
-        //instructions button
+        // instructions button
         if (mouseX >= 225 && mouseX <= 225 + RectButtonW &&
             mouseY >= 435 && mouseY <= 435 + RectButtonH)
         {
@@ -251,7 +249,7 @@ void Menu::show()
             SDL_RenderCopy(renderer, instructionsButton, NULL, &ins);
         }
 
-        //quit button
+        // quit button
         if (mouseX >= 225 && mouseX <= 225 + RectButtonW &&
             mouseY >= 535 && mouseY <= 535 + RectButtonH)
         {
@@ -265,7 +263,7 @@ void Menu::show()
             SDL_RenderCopy(renderer, quitButton, NULL, &quit);
         }
 
-        //music button
+        // music button
         SDL_Rect music = {500, 750, SquareButtonW, SquareButtonH};
         if (ismusic == true)
         {
@@ -292,7 +290,7 @@ void Menu::show()
             }
         }
 
-        //soundbutton
+        // soundbutton
         SDL_Rect sound = {500, 825, SquareButtonW, SquareButtonH};
         if (issound == true)
         {
@@ -318,7 +316,6 @@ void Menu::show()
                 SDL_RenderCopy(renderer, muteSoundButton, NULL, &sound);
             }
         }
-
     }
 
     SDL_RenderPresent(renderer);
@@ -356,7 +353,6 @@ void Menu::handleEvents()
                     state = PLAY;
                 }
 
-
                 if (x >= 225 && x <= 225 + RectButtonW &&
                     y >= 435 && y <= 435 + RectButtonH)
                 {
@@ -376,7 +372,7 @@ void Menu::handleEvents()
                     y >= 750 && y <= 750 + SquareButtonH)
                 {
                     buttonclick->playEffect();
-                    ismusic = (ismusic ==  true ? false :true);
+                    ismusic = (ismusic == true ? false : true);
                 }
                 if (x >= 500 && x <= 500 + SquareButtonW &&
                     y >= 825 && y <= 825 + SquareButtonH)
@@ -395,9 +391,9 @@ void Menu::handleEvents()
                 }
 
                 if ((x >= SmallMargin && x <= SmallMargin + SquareButtonW &&
-                    y >= 650 && y <= 650 + SquareButtonH) ||
+                     y >= 650 && y <= 650 + SquareButtonH) ||
                     (x >= 500 && x <= 500 + SquareButtonW &&
-                    y >= 650 && y <= 650 + SquareButtonH))
+                     y >= 650 && y <= 650 + SquareButtonH))
                 {
                     buttonclick->playEffect();
                     diff = (diff == NORMAL ? HARD : NORMAL);
@@ -412,14 +408,12 @@ void Menu::handleEvents()
                     state = MENU;
                 }
 
-
                 if (x >= 225 && x <= 225 + RectButtonW &&
                     y >= 435 && y <= 435 + RectButtonH)
                 {
                     buttonclick->playEffect();
                     exit(0);
                 }
-
             }
 
             break;

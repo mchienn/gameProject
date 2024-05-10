@@ -18,7 +18,7 @@ public:
     void showins();
     void showover();
     void handleEvents();
-    int getState() {return state;}
+    int getState() { return state; }
 
     int state;
 
@@ -69,21 +69,20 @@ private:
     void loadTextures();
     void freeTextures();
 
-    Text* gameover;
+    Text *gameover;
 
-    Text* instructions;
-    Text* moveRL;
-    Text* rotateblock;
-    Text* softdrop;
-    Text* harddrop;
-    Text* pause_play;
-    Text* instant_quit;
+    Text *instructions;
+    Text *moveRL;
+    Text *rotateblock;
+    Text *softdrop;
+    Text *harddrop;
+    Text *pause_play;
+    Text *instant_quit;
 
-    Text* choosediff;
-    Text* descrip;
+    Text *choosediff;
+    Text *descrip;
 
-
-    MixerManager* buttonclick;
+    MixerManager *buttonclick;
 };
 
 #endif // MENU_H
