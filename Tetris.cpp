@@ -19,18 +19,48 @@ const int Tetris::figures[7][4] =
 
 const int Tetris::hardfigures[10][4] =
 	{
-		0, 1, 2, 3, // I
-		0, 4, 5, 6, // J
-		2, 6, 5, 4, // L
-		1, 2, 5, 6, // O
-		2, 1, 5, 4, // S
-		1, 4, 5, 6, // T
-		0, 1, 5, 6, // Z
+		0,
+		1,
+		2,
+		3, // I
+		0,
+		4,
+		5,
+		6, // J
+		2,
+		6,
+		5,
+		4, // L
+		1,
+		2,
+		5,
+		6, // O
+		2,
+		1,
+		5,
+		4, // S
+		1,
+		4,
+		5,
+		6, // T
+		0,
+		1,
+		5,
+		6, // Z
 
 		// special blocks
-		0, 5, 6, 3,
-		1, 5, 6, 3,
-		0, 5, 6, 2,
+		0,
+		5,
+		6,
+		3,
+		1,
+		5,
+		6,
+		3,
+		0,
+		5,
+		6,
+		2,
 
 };
 bool Tetris::init(const char *title)
@@ -430,28 +460,27 @@ void Tetris::gameplay()
 
 	// tick
 
+	delay = 1000 - (score / 10); // giảm 100 mili giây sau mỗi 1000 điểm
+	if (delay < 100)			 // giới hạn delay tối thiểu là 100 mili giây
+		delay = 100;
 
-delay = 1000 - (score / 10); // giảm 100 mili giây sau mỗi 1000 điểm
-if (delay < 100) // giới hạn delay tối thiểu là 100 mili giây
-    delay = 100;
-
-if (currentTime - startTime > delay)
-{
-    for (int i = 0; i < 4; i++)
-        backup[i] = items[i];
-    for (int i = 0; i < 4; i++)
-    {
-        items[i].y++;
-    }
-    SDL_Delay(60);
-    if (!isvalid())
-    {
-        for (int i = 0; i < 4; i++)
-            field[backup[i].y][backup[i].x] = currentcolor;
-        nextTetrimino();
-    }
-    startTime = SDL_GetTicks();
-}
+	if (currentTime - startTime > delay)
+	{
+		for (int i = 0; i < 4; i++)
+			backup[i] = items[i];
+		for (int i = 0; i < 4; i++)
+		{
+			items[i].y++;
+		}
+		SDL_Delay(60);
+		if (!isvalid())
+		{
+			for (int i = 0; i < 4; i++)
+				field[backup[i].y][backup[i].x] = currentcolor;
+			nextTetrimino();
+		}
+		startTime = SDL_GetTicks();
+	}
 
 	// check lines
 

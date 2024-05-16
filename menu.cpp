@@ -63,6 +63,8 @@ void Menu::loadTextures()
     menuButton = IMG_LoadTexture(renderer, "img/menu.png");
     redmenuButton = IMG_LoadTexture(renderer, "img/redmenu.png");
 
+    game_over = IMG_LoadTexture(renderer, "img/g_o.png");
+
     if (musicButton == NULL)
     {
         SDL_Log("Error music \%s", SDL_GetError());

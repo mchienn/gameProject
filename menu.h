@@ -65,6 +65,7 @@ private:
     SDL_Texture *redmenuButton;
 
     SDL_Texture *menuBack;
+    SDL_Texture *game_over;
 
     void loadTextures();
     void freeTextures();
