@@ -17,7 +17,7 @@ Tetris - Basic game from C++ and SDL2
 
 ![Menu](./img/game_captures/Menu.png)
 ![Instructions](./img/game_captures/Instructions.png)
-![Game Play](./img/game_captures/GamePlay.png)
+![Game Play](./img/game_captures/Gameplay.png)
 
 #### Cách chơi:
 
