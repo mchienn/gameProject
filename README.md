@@ -2,6 +2,13 @@
 
 Tetris - Basic game from C++ and SDL2
 
+## Thông tin
+
+- Nguyễn Minh Chiến
+- MSSV: 23021491
+- Lớp: K68 - CA1
+- Mail: [nmc27705@gmail.com](nmc27705@gmail.com)
+
 ## Installation
 
 - 1 - Clone repo về máy
