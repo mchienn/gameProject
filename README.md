@@ -10,7 +10,7 @@ Tetris - Basic game from C++ and SDL2
 
 ## Giới thiệu game
 
-- Tetris là trò chơi logic và ghi điểm được lấy cảm hứng từ tetris cổ điển, người chơi sắp xếp các khối hình hộp rơi từ trên xuống để tạo ra hàng ngang đầy đủ, khi đó hàng sẽ biến mất và người chơi nhận điểm. Thách thức gia tăng khi tốc độ rơi tăng lên và không gian giảm đi.
+- Tetris là trò chơi logic và ghi điểm được lấy cảm hứng từ tetris cổ điển, người chơi sắp xếp các khối hình hộp rơi từ trên xuống để tạo ra hàng ngang đầy đủ, khi đó hàng sẽ biến mất và người chơi nhận điểm. Độ khó gia tăng khi tốc độ rơi tăng lên và không gian giảm đi.
 - Game tự viết có thuật toán nằm ngoài chương trình, đồ họa thống nhất, âm thanh sống động.
 
 #### Minh họa:
